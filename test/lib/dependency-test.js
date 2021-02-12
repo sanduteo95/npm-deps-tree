@@ -5,128 +5,24 @@ const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 chai.use(sinonChai)
 
-const utils = require('../../utils/utils')
-const cache = require('../../utils/cache')
+const registry = require('../../utils/registry')
+const cache = require('../../persistence/cache')
 
 const dependency = require('../../lib/dependency')
 
-describe('package.js', () => {
-  let makeRegistryCallStub
-
-  beforeEach(() => {
-    makeRegistryCallStub = sinon.stub(utils, 'makeRegistryCall')
-  })
-
-  afterEach(() => {
-    makeRegistryCallStub.restore()
-  })
-
-  describe('_downloadPackageWithVersion', () => {
-    it('returns the response by calling the npmjs registry', async () => {
-      const response = {
-        dependencies: {
-          dep1: '1.2.3',
-          dep2: '2.3.4'
-        }
-      }
-      makeRegistryCallStub.resolves({
-        body: response
-      })
-      const actual = await (dependency.internal._downloadPackageWithVersion('name', 'version'))
-      expect(actual).to.deep.equal(response)
-    })
-
-    it('throws an error if call fails', async () => {
-      try {
-        makeRegistryCallStub.rejects(new Error('Test'))
-        await (dependency.internal._downloadPackageWithVersion('name', 'version'))
-        expect('Test should fail').to.be.true
-      } catch (err) {
-        expect(err.message).to.equal('Test')
-      }
-    })
-  })
-
-  describe('_downloadPackage', () => {
-    it('returns the response by calling the npmjs registry', async () => {
-      const response = {
-        dependencies: {
-          dep1: '1.2.3',
-          dep2: '2.3.4'
-        }
-      }
-      makeRegistryCallStub.resolves({
-        body: {
-          versions: {
-            '1.0.0': {
-              dependencies: {
-                dep1: '1.2.3',
-                dep2: '2.3.4'
-              }
-            },
-            '2.0.0': {
-              dependencies: {
-                dep1: '1.2.3',
-                dep2: '2.3.4'
-              }
-            }
-          }
-        }
-      })
-      const actual = await (dependency.internal._downloadPackage('name', '1.x.x'))
-      expect(actual).to.deep.equal(response)
-    })
-
-    it('throws an error if it could not find a matching version', async () => {
-      try {
-        makeRegistryCallStub.resolves({
-          body: {
-            versions: {
-              '1.0.0': {
-                dependencies: {
-                  dep1: '1.2.3',
-                  dep2: '2.3.4'
-                }
-              },
-              '2.0.0': {
-                dependencies: {
-                  dep1: '1.2.3',
-                  dep2: '2.3.4'
-                }
-              }
-            }
-          }
-        })
-        await (dependency.internal._downloadPackage('name', '3.x.x'))
-        expect('Test should fail').to.be.true
-      } catch (err) {
-        expect(err.message).to.equal('Could not find matching version for name:3.x.x')
-      }
-    })
-
-    it('throws an error if call fails', async () => {
-      try {
-        makeRegistryCallStub.rejects(new Error('Test'))
-        await (dependency.internal._downloadPackage('name', 'version'))
-        expect('Test should fail').to.be.true
-      } catch (err) {
-        expect(err.message).to.equal('Test')
-      }
-    })
-  })
-
-  describe('getPackageDependencies', () => {
-    let _downloadPackageWithVersionStub
-    let _downloadPackageStub
+describe('dependency.js', () => {
+  describe('_getPackageDependencies', () => {
+    let downloadPackageWithVersionStub
+    let downloadPackageStub
 
     beforeEach(() => {
-      _downloadPackageWithVersionStub = sinon.stub(dependency.internal, '_downloadPackageWithVersion')
-      _downloadPackageStub = sinon.stub(dependency.internal, '_downloadPackage')
+      downloadPackageWithVersionStub = sinon.stub(registry, 'downloadPackageWithVersion')
+      downloadPackageStub = sinon.stub(registry, 'downloadPackage')
     })
 
     afterEach(() => {
-      _downloadPackageWithVersionStub.restore()
-      _downloadPackageStub.restore()
+      downloadPackageWithVersionStub.restore()
+      downloadPackageStub.restore()
     })
 
     describe('it returns the formatted dependencies', () => {
@@ -155,10 +51,10 @@ describe('package.js', () => {
           }
         ]
         getCachedValueStub.returns(cachedDependencies)
-        const actual = await dependency.getPackageDependencies('package', 'v')
+        const actual = await dependency.internal._getPackageDependencies('package', '1.2.3')
         expect(actual).to.deep.equal(cachedDependencies)
-        expect(_downloadPackageWithVersionStub.callCount).to.equal(0)
-        expect(_downloadPackageStub.callCount).to.equal(0)
+        expect(downloadPackageWithVersionStub.callCount).to.equal(0)
+        expect(downloadPackageStub.callCount).to.equal(0)
         expect(setCachedValueSpy.callCount).to.equal(0)
       })
 
@@ -170,8 +66,8 @@ describe('package.js', () => {
             dep2: '2.3.4'
           }
         }
-        _downloadPackageWithVersionStub.resolves(testDependencies)
-        const actual = await dependency.getPackageDependencies('package', 'v')
+        downloadPackageWithVersionStub.resolves(testDependencies)
+        const actual = await dependency.internal._getPackageDependencies('package', '1.2.3')
         expect(actual).to.deep.equal([
           {
             name: 'dep1',
@@ -182,8 +78,8 @@ describe('package.js', () => {
             version: '2.3.4'
           }
         ])
-        expect(_downloadPackageWithVersionStub.callCount).to.equal(1)
-        expect(_downloadPackageStub.callCount).to.equal(0)
+        expect(downloadPackageWithVersionStub.callCount).to.equal(1)
+        expect(downloadPackageStub.callCount).to.equal(0)
         expect(setCachedValueSpy.callCount).to.equal(1)
       })
 
@@ -195,8 +91,8 @@ describe('package.js', () => {
             dep2: '2.3.4'
           }
         }
-        _downloadPackageStub.resolves(testDependencies)
-        const actual = await dependency.getPackageDependencies('package', 'v', true)
+        downloadPackageStub.resolves(testDependencies)
+        const actual = await dependency.internal._getPackageDependencies('package', '>= 1.0.0 <2', true)
         expect(actual).to.deep.equal([
           {
             name: 'dep1',
@@ -207,60 +103,20 @@ describe('package.js', () => {
             version: '2.3.4'
           }
         ])
-        expect(_downloadPackageWithVersionStub.callCount).to.equal(0)
-        expect(_downloadPackageStub.callCount).to.equal(1)
+        expect(downloadPackageWithVersionStub.callCount).to.equal(0)
+        expect(downloadPackageStub.callCount).to.equal(1)
         expect(setCachedValueSpy.callCount).to.equal(1)
       })
 
       it('adds a dependencies section if missing', async () => {
         isCachedStub.returns(false)
         const testDependencies = {}
-        _downloadPackageWithVersionStub.resolves(testDependencies)
-        const actual = await dependency.getPackageDependencies('package', 'v')
+        downloadPackageWithVersionStub.resolves(testDependencies)
+        const actual = await dependency.internal._getPackageDependencies('package', '1.2.3')
         expect(actual).to.deep.equal([])
-        expect(_downloadPackageWithVersionStub.callCount).to.equal(1)
-        expect(_downloadPackageStub.callCount).to.equal(0)
+        expect(downloadPackageWithVersionStub.callCount).to.equal(1)
+        expect(downloadPackageStub.callCount).to.equal(0)
         expect(setCachedValueSpy.callCount).to.equal(1)
-      })
-
-      it('throws an error if the name is invalid', async () => {
-        isCachedStub.returns(false)
-        const testDependencies = {
-          dependencies: {
-            ' dep1': '1.2.3',
-            dep2: '2.3.4'
-          }
-        }
-        _downloadPackageWithVersionStub.resolves(testDependencies)
-        try {
-          await dependency.getPackageDependencies('package', 'v')
-          expect('Test should fail').to.be.true
-        } catch (err) {
-          expect(err.message).to.equal('Name is not a valid NPM package name.')
-          expect(_downloadPackageWithVersionStub.callCount).to.equal(1)
-          expect(_downloadPackageStub.callCount).to.equal(0)
-          expect(setCachedValueSpy.callCount).to.equal(0)
-        }
-      })
-
-      it('throws an error if the version is invalid', async () => {
-        isCachedStub.returns(false)
-        const testDependencies = {
-          dependencies: {
-            dep1: '1.x.x',
-            dep2: '2.3.4'
-          }
-        }
-        _downloadPackageWithVersionStub.resolves(testDependencies)
-        try {
-          await dependency.getPackageDependencies('package', 'v')
-          expect('Test should fail').to.be.true
-        } catch (err) {
-          expect(err.message).to.equal('Major versions cannot be specified with x and *.')
-          expect(_downloadPackageWithVersionStub.callCount).to.equal(1)
-          expect(_downloadPackageStub.callCount).to.equal(0)
-          expect(setCachedValueSpy.callCount).to.equal(0)
-        }
       })
     })
 
@@ -269,7 +125,7 @@ describe('package.js', () => {
 
       beforeEach(() => {
         isCachedStub = sinon.stub(cache, 'isCached').returns(false)
-        _downloadPackageWithVersionStub.rejects(new Error('Test'))
+        downloadPackageWithVersionStub.rejects(new Error('Test'))
       })
 
       afterEach(() => {
@@ -278,12 +134,137 @@ describe('package.js', () => {
 
       it('re-throws the error', async () => {
         try {
-          await dependency.getPackageDependencies('package', 'v')
+          await dependency.internal._getPackageDependencies('package', '1.2.3')
           expect('Test should fail').to.be.true
         } catch (err) {
           expect(err.message).to.equal('Test')
         }
       })
+    })
+  })
+
+  describe('computeDependencyTreeForPackage', () => {
+    let _getPackageDependenciesStub
+
+    beforeEach(() => {
+      _getPackageDependenciesStub = sinon.stub(dependency.internal, '_getPackageDependencies')
+    })
+
+    afterEach(() => {
+      _getPackageDependenciesStub.restore()
+    })
+
+    it('recursively gets dependencies', async () => {
+      _getPackageDependenciesStub.callsFake(async (name, version) => {
+        switch (name) {
+          case 'package':
+            return [
+              {
+                name: 'dep1',
+                version: '1.2.3'
+              },
+              {
+                name: 'dep2',
+                version: '2.3.4'
+              }
+            ]
+          case 'dep1':
+            return [
+              {
+                name: 'dep3',
+                version: '3.4.5'
+              }
+            ]
+          case 'dep2':
+            return []
+          case 'dep3':
+            return [
+              {
+                name: 'dep4',
+                version: '4.5.6'
+              },
+              {
+                name: 'dep2',
+                version: '2.3.4'
+              }
+            ]
+          default:
+            return []
+        }
+      })
+      const actual = await dependency.computeDependencyTreeForPackage('package', 'latest')
+      expect(actual).to.deep.equal({
+        name: 'package',
+        version: 'latest',
+        dependencies: [
+          {
+            name: 'dep1',
+            version: '1.2.3',
+            dependencies: [
+              {
+                name: 'dep3',
+                version: '3.4.5',
+                dependencies: [
+                  {
+                    name: 'dep4',
+                    version: '4.5.6',
+                    dependencies: []
+                  },
+                  {
+                    name: 'dep2',
+                    version: '2.3.4',
+                    dependencies: []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: 'dep2',
+            version: '2.3.4',
+            dependencies: []
+          }
+        ]
+      })
+      expect(_getPackageDependenciesStub.callCount).to.equal(6)
+    })
+
+    it('throws an error when cyclic dependency found', async () => {
+      _getPackageDependenciesStub.callsFake(async (name, version) => {
+        switch (name) {
+          case 'package':
+            return [
+              {
+                name: 'dep1',
+                version: '1.2.3'
+              },
+              {
+                name: 'package',
+                version: 'other'
+              }
+            ]
+          default:
+            return []
+        }
+      })
+      try {
+        await dependency.computeDependencyTreeForPackage('package', 'latest')
+        expect('Test should fail').to.be.true
+      } catch (err) {
+        expect(err.message).to.equal('Cannot have cyclic dependencies.')
+        expect(_getPackageDependenciesStub.callCount).to.equal(1)
+      }
+    })
+
+    it('catches and re-throws an error', async () => {
+      _getPackageDependenciesStub.rejects(new Error('Test'))
+      try {
+        await dependency.computeDependencyTreeForPackage('package', 'latest')
+        expect('Test should fail').to.be.true
+      } catch (err) {
+        expect(err.message).to.equal('Test')
+        expect(_getPackageDependenciesStub.callCount).to.equal(1)
+      }
     })
   })
 })

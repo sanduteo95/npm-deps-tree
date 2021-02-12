@@ -5,13 +5,13 @@ const sinon = require('sinon')
 const request = require('supertest')
 
 const app = require('../app')
-const index = require('../lib/index')
+const dependency = require('../lib/dependency')
 
 describe('GET', () => {
   let computeDependencyTreeForPackageStub
 
   beforeEach(() => {
-    computeDependencyTreeForPackageStub = sinon.stub(index, 'computeDependencyTreeForPackage')
+    computeDependencyTreeForPackageStub = sinon.stub(dependency, 'computeDependencyTreeForPackage')
   })
 
   afterEach(() => {
@@ -61,7 +61,7 @@ describe('POST', () => {
   let computeDependencyTreeForPackageStub
 
   beforeEach(() => {
-    computeDependencyTreeForPackageStub = sinon.stub(index, 'computeDependencyTreeForPackage')
+    computeDependencyTreeForPackageStub = sinon.stub(dependency, 'computeDependencyTreeForPackage')
   })
 
   afterEach(() => {
@@ -177,7 +177,7 @@ describe('invalid version', () => {
       .expect(400)
       .then(response => {
         expect(JSON.parse(response.error.text)).to.deep.equal({
-          error: 'The version needs to be fully specified.'
+          error: 'The version is invalid.'
         })
         done()
       })
@@ -195,7 +195,7 @@ describe('invalid version', () => {
       .expect(400)
       .then(response => {
         expect(JSON.parse(response.error.text)).to.deep.equal({
-          error: 'The version needs to be fully specified.'
+          error: 'The version is invalid.'
         })
         done()
       })

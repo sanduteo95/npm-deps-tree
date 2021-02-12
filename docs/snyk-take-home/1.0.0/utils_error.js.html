@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: utils/error.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,44 +17,33 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: utils/error.js</h1>
 
     
 
 
 
     
-
-
-    <h3>snyk-take-home 1.0.0</h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h3>How to run</h3>
-<p>Run <code>npm start</code></p>
-<p>Call the following APIs at <code>http://localhost:3000</code>:</p>
-<ul>
-<li>GET <code>/package/&lt;package&gt;</code>, where <code>&lt;package&gt;</code> is the name of a package published to NPM</li>
-<li>POST <code>/package/&lt;package&gt;</code> with JSON body and a provided <code>version</code> field</li>
-</ul>
-<h3>How to test</h3>
-<p>Run <code>npm t</code></p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Formats the error with a status code and a message.
+ * @param {number} status The status code for the response.
+ * @param {string} version The message for the error.
+ * @returns {Object} An error.
+ */
+const formatError = (status, message) => {
+  const err = new Error(message)
+  err.status = status
+  return err
+}
+
+module.exports = {
+  formatError
+}
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

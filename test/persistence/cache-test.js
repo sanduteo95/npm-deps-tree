@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 const expect = require('chai').expect
 
-const cache = require('../../utils/cache')
+const cache = require('../../persistence/cache')
 
 describe('cache.js', () => {
   const value = {

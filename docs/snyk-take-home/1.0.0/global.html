@@ -104,7 +104,7 @@
     
 
     
-    <h4 class="name" id="computeDependencyTreeForPackage"><span class="type-signature">(async) </span>computeDependencyTreeForPackage<span class="signature">(name, version, useSemver)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="computeDependencyTreeForPackage"><span class="type-signature">(async) </span>computeDependencyTreeForPackage<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -192,29 +192,6 @@ It recursively builds the dependency tree for each dependency until no more can 
         </tr>
 
     
-
-        <tr>
-            
-                <td class="name"><code>useSemver</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Flag to tell if we want to try to resolve complex semver versions.</td>
-        </tr>
-
-    
     </tbody>
 </table>
 
@@ -252,7 +229,7 @@ It recursively builds the dependency tree for each dependency until no more can 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_index.js.html">lib/index.js</a>, <a href="lib_index.js.html#line13">line 13</a>
+        <a href="lib_dependency.js.html">lib/dependency.js</a>, <a href="lib_dependency.js.html#line13">line 13</a>
     </li></ul></dd>
     
 
@@ -282,188 +259,6 @@ It recursively builds the dependency tree for each dependency until no more can 
         
 <div class="param-desc">
     The formatted dependencies.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getCachedValue"><span class="type-signature"></span>getCachedValue<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Object}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Retrieves the cached value for the name and version pair.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The name of the package.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>version</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The version of the package.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_cache.js.html">utils/cache.js</a>, <a href="utils_cache.js.html#line37">line 37</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    The cached value for the given name and version pair.
 </div>
 
 
@@ -492,7 +287,7 @@ It recursively builds the dependency tree for each dependency until no more can 
     
 
     
-    <h4 class="name" id="getPackageDependencies"><span class="type-signature">(async) </span>getPackageDependencies<span class="signature">(name, version, useSemver)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="downloadPackage"><span class="type-signature">(async) </span>downloadPackage<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -500,9 +295,7 @@ It recursively builds the dependency tree for each dependency until no more can 
 
 
 <div class="description">
-    Retrives the dependencies for a package with given name and version.
-If cached, then retrieves the cached version.
-If not, it sets the newly computed set of dependencies.
+    Downloads the package versions and looks for the package that matches the given version.
 </div>
 
 
@@ -577,30 +370,7 @@ If not, it sets the newly computed set of dependencies.
 
             
 
-            <td class="description last">The version of the package.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>useSemver</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Flag to tell if we want to try to resolve complex semver versions.</td>
+            <td class="description last">The semver version of the package.</td>
         </tr>
 
     
@@ -641,7 +411,7 @@ If not, it sets the newly computed set of dependencies.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_dependency.js.html">lib/dependency.js</a>, <a href="lib_dependency.js.html#line15">line 15</a>
+        <a href="utils_registry.js.html">utils/registry.js</a>, <a href="utils_registry.js.html#line37">line 37</a>
     </li></ul></dd>
     
 
@@ -670,7 +440,7 @@ If not, it sets the newly computed set of dependencies.
 
         
 <div class="param-desc">
-    The formatted dependencies.
+    The package.
 </div>
 
 
@@ -681,7 +451,7 @@ If not, it sets the newly computed set of dependencies.
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Object</span>
 
 
     </dd>
@@ -699,7 +469,7 @@ If not, it sets the newly computed set of dependencies.
     
 
     
-    <h4 class="name" id="isCached"><span class="type-signature"></span>isCached<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="downloadPackageWithVersion"><span class="type-signature">(async) </span>downloadPackageWithVersion<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -707,7 +477,7 @@ If not, it sets the newly computed set of dependencies.
 
 
 <div class="description">
-    Checks if there is a cached value for the name and version pair.
+    Downloads the package with the given version.
 </div>
 
 
@@ -823,7 +593,7 @@ If not, it sets the newly computed set of dependencies.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_cache.js.html">utils/cache.js</a>, <a href="utils_cache.js.html#line27">line 27</a>
+        <a href="utils_registry.js.html">utils/registry.js</a>, <a href="utils_registry.js.html#line20">line 20</a>
     </li></ul></dd>
     
 
@@ -852,7 +622,7 @@ If not, it sets the newly computed set of dependencies.
 
         
 <div class="param-desc">
-    Whether it is cached or not.
+    The package.
 </div>
 
 
@@ -863,7 +633,7 @@ If not, it sets the newly computed set of dependencies.
     </dt>
     <dd>
         
-<span class="param-type">boolean</span>
+<span class="param-type">Object</span>
 
 
     </dd>
@@ -881,7 +651,7 @@ If not, it sets the newly computed set of dependencies.
     
 
     
-    <h4 class="name" id="setCachedValue"><span class="type-signature"></span>setCachedValue<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    <h4 class="name" id="formatError"><span class="type-signature"></span>formatError<span class="signature">(status, version)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -889,7 +659,7 @@ If not, it sets the newly computed set of dependencies.
 
 
 <div class="description">
-    Sets the cached value for the name and version pair.
+    Formats the error with a status code and a message.
 </div>
 
 
@@ -925,13 +695,13 @@ If not, it sets the newly computed set of dependencies.
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>status</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
             
@@ -941,7 +711,7 @@ If not, it sets the newly computed set of dependencies.
 
             
 
-            <td class="description last">The name of the package.</td>
+            <td class="description last">The status code for the response.</td>
         </tr>
 
     
@@ -964,7 +734,7 @@ If not, it sets the newly computed set of dependencies.
 
             
 
-            <td class="description last">The version of the package.</td>
+            <td class="description last">The message for the error.</td>
         </tr>
 
     
@@ -1005,7 +775,7 @@ If not, it sets the newly computed set of dependencies.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_cache.js.html">utils/cache.js</a>, <a href="utils_cache.js.html#line47">line 47</a>
+        <a href="utils_error.js.html">utils/error.js</a>, <a href="utils_error.js.html#line7">line 7</a>
     </li></ul></dd>
     
 
@@ -1033,6 +803,10 @@ If not, it sets the newly computed set of dependencies.
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    An error.
+</div>
+
 
 
 <dl>
@@ -1041,7 +815,7 @@ If not, it sets the newly computed set of dependencies.
     </dt>
     <dd>
         
-<span class="param-type">void</span>
+<span class="param-type">Object</span>
 
 
     </dd>
@@ -1161,7 +935,7 @@ Throws an error if invalid.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_validation.js.html">utils/validation.js</a>, <a href="utils_validation.js.html#line12">line 12</a>
+        <a href="utils_validation.js.html">utils/validation.js</a>, <a href="utils_validation.js.html#line13">line 13</a>
     </li></ul></dd>
     
 
@@ -1320,7 +1094,7 @@ Throws an error if invalid.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_validation.js.html">utils/validation.js</a>, <a href="utils_validation.js.html#line53">line 53</a>
+        <a href="utils_validation.js.html">utils/validation.js</a>, <a href="utils_validation.js.html#line28">line 28</a>
     </li></ul></dd>
     
 
@@ -1388,13 +1162,13 @@ Throws an error if invalid.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#computeDependencyTreeForPackage">computeDependencyTreeForPackage</a></li><li><a href="global.html#getCachedValue">getCachedValue</a></li><li><a href="global.html#getPackageDependencies">getPackageDependencies</a></li><li><a href="global.html#isCached">isCached</a></li><li><a href="global.html#setCachedValue">setCachedValue</a></li><li><a href="global.html#validateName">validateName</a></li><li><a href="global.html#validateVersion">validateVersion</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#computeDependencyTreeForPackage">computeDependencyTreeForPackage</a></li><li><a href="global.html#downloadPackage">downloadPackage</a></li><li><a href="global.html#downloadPackageWithVersion">downloadPackageWithVersion</a></li><li><a href="global.html#formatError">formatError</a></li><li><a href="global.html#validateName">validateName</a></li><li><a href="global.html#validateVersion">validateVersion</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Feb 12 2021 17:29:22 GMT+0000 (Greenwich Mean Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Feb 12 2021 21:54:23 GMT+0000 (Greenwich Mean Time)
 </footer>
 
 <script> prettyPrint(); </script>

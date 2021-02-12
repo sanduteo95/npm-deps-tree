@@ -21,53 +21,31 @@ describe('validation.js', () => {
 
     describe('throws an error if version is invalid', () => {
       it('1.2', () => {
-        expect(validateVersion.bind(validateVersion, '1.2')).to.throw('The version needs to be fully specified.')
+        expect(validateVersion.bind(validateVersion, '1.2')).to.throw('The version is invalid.')
       })
 
       it('1', () => {
-        expect(validateVersion.bind(validateVersion, '1')).to.throw('The version needs to be fully specified.')
+        expect(validateVersion.bind(validateVersion, '1')).to.throw('The version is invalid.')
       })
 
       it('1.x.3', () => {
-        expect(validateVersion.bind(validateVersion, '1.x.3')).to.throw('Major versions cannot be specified with x and *.')
+        expect(validateVersion.bind(validateVersion, '1.x.3')).to.throw('The version is invalid.')
       })
 
       it('x.2.3', () => {
-        expect(validateVersion.bind(validateVersion, 'x.2.3')).to.throw('Major versions cannot be specified with x and *.')
+        expect(validateVersion.bind(validateVersion, 'x.2.3')).to.throw('The version is invalid.')
       })
 
       it('1.*.3', () => {
-        expect(validateVersion.bind(validateVersion, '1.*.3')).to.throw('Major versions cannot be specified with x and *.')
+        expect(validateVersion.bind(validateVersion, '1.*.3')).to.throw('The version is invalid.')
       })
 
       it('*.2.3', () => {
-        expect(validateVersion.bind(validateVersion, '*.2.3')).to.throw('Major versions cannot be specified with x and *.')
+        expect(validateVersion.bind(validateVersion, '*.2.3')).to.throw('The version is invalid.')
       })
 
       it('empty', () => {
-        expect(validateVersion.bind(validateVersion, 'empty')).to.throw('The version needs to be fully specified.')
-      })
-    })
-
-    describe('cleans up the version', () => {
-      it('~1.2.3', () => {
-        expect(validateVersion('~1.2.3')).to.equal('1.2.3')
-      })
-
-      it('^1.2.3', () => {
-        expect(validateVersion('^1.2.3')).to.equal('1.2.3')
-      })
-
-      it('^1.2.3', () => {
-        expect(validateVersion('^1.2.3')).to.equal('1.2.3')
-      })
-
-      it('>=1.2.3 <2', () => {
-        expect(validateVersion('>=1.2.3 <2')).to.equal('1.2.3')
-      })
-
-      it('01.02.03', () => {
-        expect(validateVersion('01.02.03')).to.equal('1.2.3')
+        expect(validateVersion.bind(validateVersion, 'empty')).to.throw('The version is invalid.')
       })
     })
 
