@@ -20,10 +20,6 @@ describe('validation.js', () => {
     })
 
     describe('throws an error if version is invalid', () => {
-      it('a.b.c', () => {
-        expect(validateVersion.bind(validateVersion, 'a.b.c')).to.throw('Major versions cannot be specified with x and *.')
-      })
-
       it('1.2', () => {
         expect(validateVersion.bind(validateVersion, '1.2')).to.throw('The version needs to be fully specified.')
       })
@@ -46,6 +42,10 @@ describe('validation.js', () => {
 
       it('*.2.3', () => {
         expect(validateVersion.bind(validateVersion, '*.2.3')).to.throw('Major versions cannot be specified with x and *.')
+      })
+
+      it('empty', () => {
+        expect(validateVersion.bind(validateVersion, 'empty')).to.throw('The version needs to be fully specified.')
       })
     })
 
@@ -82,6 +82,14 @@ describe('validation.js', () => {
 
       it('1.2.x', () => {
         expect(validateVersion('1.2.x')).to.equal('1.2.x')
+      })
+
+      it('1.2.0', () => {
+        expect(validateVersion('1.2.0')).to.equal('1.2.0')
+      })
+
+      it('1.0.0-rc3', () => {
+        expect(validateVersion('1.0.0-rc3')).to.equal('1.0.0-rc3')
       })
     })
   })

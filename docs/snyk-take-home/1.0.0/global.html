@@ -104,6 +104,212 @@
     
 
     
+    <h4 class="name" id="computeDependencyTreeForPackage"><span class="type-signature">(async) </span>computeDependencyTreeForPackage<span class="signature">(name, version, useSemver)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Computes the dependency tree for a given package with a given version.
+It recursively builds the dependency tree for each dependency until no more can be found.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The name of the package.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>version</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The version of the package.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>useSemver</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Flag to tell if we want to try to resolve complex semver versions.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_index.js.html">lib/index.js</a>, <a href="lib_index.js.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The formatted dependencies.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="getCachedValue"><span class="type-signature"></span>getCachedValue<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
@@ -228,7 +434,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cache.js.html">cache.js</a>, <a href="cache.js.html#line37">line 37</a>
+        <a href="utils_cache.js.html">utils/cache.js</a>, <a href="utils_cache.js.html#line37">line 37</a>
     </li></ul></dd>
     
 
@@ -286,7 +492,7 @@
     
 
     
-    <h4 class="name" id="getPackageDependencies"><span class="type-signature">(async) </span>getPackageDependencies<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="getPackageDependencies"><span class="type-signature">(async) </span>getPackageDependencies<span class="signature">(name, version, useSemver)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -294,7 +500,7 @@
 
 
 <div class="description">
-    Retrives the depdendencies for a package with given name and version.
+    Retrives the dependencies for a package with given name and version.
 If cached, then retrieves the cached version.
 If not, it sets the newly computed set of dependencies.
 </div>
@@ -375,6 +581,29 @@ If not, it sets the newly computed set of dependencies.
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>useSemver</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Flag to tell if we want to try to resolve complex semver versions.</td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -412,7 +641,7 @@ If not, it sets the newly computed set of dependencies.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line65">line 65</a>
+        <a href="lib_dependency.js.html">lib/dependency.js</a>, <a href="lib_dependency.js.html#line15">line 15</a>
     </li></ul></dd>
     
 
@@ -594,7 +823,7 @@ If not, it sets the newly computed set of dependencies.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cache.js.html">cache.js</a>, <a href="cache.js.html#line27">line 27</a>
+        <a href="utils_cache.js.html">utils/cache.js</a>, <a href="utils_cache.js.html#line27">line 27</a>
     </li></ul></dd>
     
 
@@ -776,7 +1005,7 @@ If not, it sets the newly computed set of dependencies.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cache.js.html">cache.js</a>, <a href="cache.js.html#line47">line 47</a>
+        <a href="utils_cache.js.html">utils/cache.js</a>, <a href="utils_cache.js.html#line47">line 47</a>
     </li></ul></dd>
     
 
@@ -932,7 +1161,7 @@ Throws an error if invalid.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="validation.js.html">validation.js</a>, <a href="validation.js.html#line12">line 12</a>
+        <a href="utils_validation.js.html">utils/validation.js</a>, <a href="utils_validation.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -1091,7 +1320,7 @@ Throws an error if invalid.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="validation.js.html">validation.js</a>, <a href="validation.js.html#line54">line 54</a>
+        <a href="utils_validation.js.html">utils/validation.js</a>, <a href="utils_validation.js.html#line53">line 53</a>
     </li></ul></dd>
     
 
@@ -1159,13 +1388,13 @@ Throws an error if invalid.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#getCachedValue">getCachedValue</a></li><li><a href="global.html#getPackageDependencies">getPackageDependencies</a></li><li><a href="global.html#isCached">isCached</a></li><li><a href="global.html#setCachedValue">setCachedValue</a></li><li><a href="global.html#validateName">validateName</a></li><li><a href="global.html#validateVersion">validateVersion</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#computeDependencyTreeForPackage">computeDependencyTreeForPackage</a></li><li><a href="global.html#getCachedValue">getCachedValue</a></li><li><a href="global.html#getPackageDependencies">getPackageDependencies</a></li><li><a href="global.html#isCached">isCached</a></li><li><a href="global.html#setCachedValue">setCachedValue</a></li><li><a href="global.html#validateName">validateName</a></li><li><a href="global.html#validateVersion">validateVersion</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Thu Feb 11 2021 18:06:56 GMT+0000 (Greenwich Mean Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Feb 12 2021 17:29:22 GMT+0000 (Greenwich Mean Time)
 </footer>
 
 <script> prettyPrint(); </script>

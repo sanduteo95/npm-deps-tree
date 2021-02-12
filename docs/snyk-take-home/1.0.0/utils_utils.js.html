@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/utils.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/utils.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const got = require('got')
+
+const cache = require('./cache')
+const logger = require('./logger')
+const { validateName, validateVersion, versionsMatch } = require('./validation')
+
+const REGISTRY_URL = 'https://registry.npmjs.org'
+let RETRIES = 5
+
+// Helper function to set retries for tests
+const _setRetries = retries => {
+  RETRIES = retries
+}
+
+const _makeRegistryCall = async url => {
+  try {
+    logger.info(`Calling out to ${url}`)
+    return await got.get(url, { responseType: 'json', retries: RETRIES })
+  } catch (error) {
+    /* istanbul ignore next */
+    if (error.response &amp;&amp; error.response.body) {
+      throw new Error(error.response.body)
+    } else if (error instanceof Error) {
+      throw error
+    } else {
+      throw new Error(error)
+    }
+  }
+}
+
+// Helper function to download a package with a given version from the npmjs registry
+const _downloadPackageWithVersion = async (name, version) => {
+  const url = `${REGISTRY_URL}/${name}/${version}`
+
+  try {
+    const { body } = await _makeRegistryCall(url)
+    logger.info(`Downloaded package ${name}:${version}`)
+    return body
+  } catch (error) {
+    logger.error(`Failed to download package ${name}:${version}`, { err: error })
+    throw error
+  }
+}
+
+// Helper function to download a package from the npmjs registry and find appropriate version
+const _downloadPackage = async (name, version) => {
+  const url = `${REGISTRY_URL}/${name}`
+
+  try {
+    const { body } = await _makeRegistryCall(url)
+
+    // look at available versions in reverse order
+    const matchingVersion = Object.keys(body.versions).slice(0).reverse().find(availableVersion => {
+      return versionsMatch(availableVersion, version)
+    })
+
+    if (matchingVersion === undefined) {
+      throw new Error(`Could not find matching version for ${name}:${version}`)
+    }
+
+    return body.versions[matchingVersion]
+  } catch (error) {
+    logger.error(`Failed to download package ${name}:${version}`, { err: error })
+    throw error
+  }
+}
+
+// Helper function to format dependencies into arrays of objects:
+// { "name": &lt;dependency name>, "version": &lt;dependency version>"}
+// If useSemver is false, then we further validate the version
+const _formatDependencies = (dependencies, useSemver) => {
+  try {
+    return Object.keys(dependencies).map(name => {
+      const version = dependencies[name]
+      logger.info(`Formating dependency ${name}:${version}`)
+      return {
+        name: validateName(name),
+        version: useSemver ? version : validateVersion(version)
+      }
+    })
+  } catch (error) {
+    logger.info('Found an invalid version. Failing the call.')
+    throw error
+  }
+}
+
+/**
+ * Retrives the dependencies for a package with given name and version.
+ * If cached, then retrieves the cached version.
+ * If not, it sets the newly computed set of dependencies.
+ * @param {string} name The name of the package.
+ * @param {string} version The version of the package.
+ * @param {boolean} useSemver Flag to tell if we want to try to resolve complex semver versions.
+ * @returns {string} The formatted dependencies.
+ */
+const getPackageDependencies = async (name, version, useSemver) => {
+  if (!cache.isCached(name, version)) {
+    try {
+      logger.info('Retrieving the list of dependencies')
+      let downloadedPackage
+      /* istanbul ignore next */
+      if (!useSemver || version === 'latest' || /^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)/.test(version)) {
+        downloadedPackage = await module.exports.internal._downloadPackageWithVersion(name, version)
+      } else {
+        downloadedPackage = await module.exports.internal._downloadPackage(name, version)
+      }
+
+      if (downloadedPackage.dependencies === undefined) {
+        downloadedPackage.dependencies = {}
+      }
+
+      // ASSUMPTION: This is for production code so we don't actually care about devDependencies
+      logger.info(`Retrieved ${Object.keys(downloadedPackage.dependencies).length} dependencies`)
+      const formattedDependencies = _formatDependencies(downloadedPackage.dependencies, useSemver)
+      cache.setCachedValue(name, version, formattedDependencies)
+      return formattedDependencies
+    } catch (error) {
+      logger.error('Failed to retrieve the list of dependencies', { err: error })
+      throw error
+    }
+  } else {
+    return cache.getCachedValue(name, version)
+  }
+}
+
+module.exports = {
+  getPackageDependencies,
+  internal: {
+    _setRetries,
+    _downloadPackageWithVersion,
+    _downloadPackage
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#computeDependencyTreeForPackage">computeDependencyTreeForPackage</a></li><li><a href="global.html#getCachedValue">getCachedValue</a></li><li><a href="global.html#getPackageDependencies">getPackageDependencies</a></li><li><a href="global.html#isCached">isCached</a></li><li><a href="global.html#setCachedValue">setCachedValue</a></li><li><a href="global.html#validateName">validateName</a></li><li><a href="global.html#validateVersion">validateVersion</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Feb 12 2021 17:11:47 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

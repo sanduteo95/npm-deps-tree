@@ -170,14 +170,14 @@ describe('invalid version', () => {
     request(app)
       .get('/package/test')
       .send({
-        version: 'a.b.c'
+        version: 'foo'
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(400)
       .then(response => {
         expect(JSON.parse(response.error.text)).to.deep.equal({
-          error: 'Major versions cannot be specified with x and *.'
+          error: 'The version needs to be fully specified.'
         })
         done()
       })
@@ -188,14 +188,14 @@ describe('invalid version', () => {
     request(app)
       .post('/package/test')
       .send({
-        version: 'a.b.c'
+        version: 'foo'
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(400)
       .then(response => {
         expect(JSON.parse(response.error.text)).to.deep.equal({
-          error: 'Major versions cannot be specified with x and *.'
+          error: 'The version needs to be fully specified.'
         })
         done()
       })

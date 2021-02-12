@@ -4,13 +4,13 @@ const expect = chai.expect
 const sinon = require('sinon')
 
 const { computeDependencyTreeForPackage } = require('../../lib/index')
-const utils = require('../../utils/utils')
+const dependency = require('../../lib/dependency')
 
 describe('index.js', () => {
   let getPackageDependenciesStub
 
   beforeEach(() => {
-    getPackageDependenciesStub = sinon.stub(utils, 'getPackageDependencies')
+    getPackageDependenciesStub = sinon.stub(dependency, 'getPackageDependencies')
   })
 
   afterEach(() => {
