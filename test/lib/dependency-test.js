@@ -26,41 +26,9 @@ describe('dependency.js', () => {
     })
 
     describe('it returns the formatted dependencies', () => {
-      let isCachedStub
-      let getCachedValueStub
-      let setCachedValueSpy
-
-      beforeEach(() => {
-        isCachedStub = sinon.stub(cache, 'isCached')
-        getCachedValueStub = sinon.stub(cache, 'getCachedValue')
-        setCachedValueSpy = sinon.spy(cache, 'setCachedValue')
-      })
-
-      afterEach(() => {
-        isCachedStub.restore()
-        getCachedValueStub.restore()
-        setCachedValueSpy.restore()
-      })
-
-      it('returns the cached depedencies if present', async () => {
-        isCachedStub.returns(true)
-        const cachedDependencies = [
-          {
-            name: 'dep1',
-            version: '1.2.3'
-          }
-        ]
-        getCachedValueStub.returns(cachedDependencies)
-        const actual = await dependency.internal._getPackageDependencies('package', '1.2.3')
-        expect(actual).to.deep.equal(cachedDependencies)
-        expect(downloadPackageWithVersionStub.callCount).to.equal(0)
-        expect(downloadPackageStub.callCount).to.equal(0)
-        expect(setCachedValueSpy.callCount).to.equal(0)
-      })
-
-      it('computes the depedencies and caches them if not present (non-semver)', async () => {
-        isCachedStub.returns(false)
+      it('computes the dependencies (non-semver)', async () => {
         const testDependencies = {
+          version: 'version',
           dependencies: {
             dep1: '1.2.3',
             dep2: '2.3.4'
@@ -68,24 +36,26 @@ describe('dependency.js', () => {
         }
         downloadPackageWithVersionStub.resolves(testDependencies)
         const actual = await dependency.internal._getPackageDependencies('package', '1.2.3')
-        expect(actual).to.deep.equal([
-          {
-            name: 'dep1',
-            version: '1.2.3'
-          },
-          {
-            name: 'dep2',
-            version: '2.3.4'
-          }
-        ])
+        expect(actual).to.deep.equal({
+          dependencies: [
+            {
+              name: 'dep1',
+              version: '1.2.3'
+            },
+            {
+              name: 'dep2',
+              version: '2.3.4'
+            }
+          ],
+          matchVersion: 'version'
+        })
         expect(downloadPackageWithVersionStub.callCount).to.equal(1)
         expect(downloadPackageStub.callCount).to.equal(0)
-        expect(setCachedValueSpy.callCount).to.equal(1)
       })
 
-      it('computes the depedencies and caches them if not present (semver)', async () => {
-        isCachedStub.returns(false)
+      it('computes the dependencies (semver)', async () => {
         const testDependencies = {
+          version: 'version',
           dependencies: {
             dep1: '1.2.3',
             dep2: '2.3.4'
@@ -93,30 +63,35 @@ describe('dependency.js', () => {
         }
         downloadPackageStub.resolves(testDependencies)
         const actual = await dependency.internal._getPackageDependencies('package', '>= 1.0.0 <2', true)
-        expect(actual).to.deep.equal([
-          {
-            name: 'dep1',
-            version: '1.2.3'
-          },
-          {
-            name: 'dep2',
-            version: '2.3.4'
-          }
-        ])
+        expect(actual).to.deep.equal({
+          dependencies: [
+            {
+              name: 'dep1',
+              version: '1.2.3'
+            },
+            {
+              name: 'dep2',
+              version: '2.3.4'
+            }
+          ],
+          matchVersion: 'version'
+        })
         expect(downloadPackageWithVersionStub.callCount).to.equal(0)
         expect(downloadPackageStub.callCount).to.equal(1)
-        expect(setCachedValueSpy.callCount).to.equal(1)
       })
 
       it('adds a dependencies section if missing', async () => {
-        isCachedStub.returns(false)
-        const testDependencies = {}
+        const testDependencies = {
+          version: 'version'
+        }
         downloadPackageWithVersionStub.resolves(testDependencies)
         const actual = await dependency.internal._getPackageDependencies('package', '1.2.3')
-        expect(actual).to.deep.equal([])
+        expect(actual).to.deep.equal({
+          dependencies: [],
+          matchVersion: 'version'
+        })
         expect(downloadPackageWithVersionStub.callCount).to.equal(1)
         expect(downloadPackageStub.callCount).to.equal(0)
-        expect(setCachedValueSpy.callCount).to.equal(1)
       })
     })
 
@@ -145,20 +120,45 @@ describe('dependency.js', () => {
 
   describe('computeDependencyTreeForPackage', () => {
     let _getPackageDependenciesStub
+    let isCachedStub
+    let getCachedValueStub
+    let setCachedValueSpy
 
     beforeEach(() => {
+      isCachedStub = sinon.stub(cache, 'isCached')
+      getCachedValueStub = sinon.stub(cache, 'getCachedValue')
+      setCachedValueSpy = sinon.spy(cache, 'setCachedValue')
       _getPackageDependenciesStub = sinon.stub(dependency.internal, '_getPackageDependencies')
     })
 
     afterEach(() => {
+      isCachedStub.restore()
+      getCachedValueStub.restore()
+      setCachedValueSpy.restore()
       _getPackageDependenciesStub.restore()
     })
 
-    it('recursively gets dependencies', async () => {
+    it('returns cached values', async () => {
+      isCachedStub.returns(true)
+      getCachedValueStub.returns([])
+      const actual = await dependency.computeDependencyTreeForPackage('package', '1.2.3')
+      expect(actual).to.deep.equal({
+        name: 'package',
+        version: '1.2.3',
+        dependencies: []
+      })
+      expect(_getPackageDependenciesStub.callCount).to.equal(0)
+      expect(getCachedValueStub.callCount).to.equal(1)
+      expect(setCachedValueSpy.callCount).to.equal(0)
+    })
+
+    it('recursively gets dependencies if provided latest version', async () => {
+      isCachedStub.returns(false)
       _getPackageDependenciesStub.callsFake(async (name, version) => {
+        let dependencies
         switch (name) {
           case 'package':
-            return [
+            dependencies = [
               {
                 name: 'dep1',
                 version: '1.2.3'
@@ -168,17 +168,20 @@ describe('dependency.js', () => {
                 version: '2.3.4'
               }
             ]
+            break
           case 'dep1':
-            return [
+            dependencies = [
               {
                 name: 'dep3',
                 version: '3.4.5'
               }
             ]
+            break
           case 'dep2':
-            return []
+            dependencies = []
+            break
           case 'dep3':
-            return [
+            dependencies = [
               {
                 name: 'dep4',
                 version: '4.5.6'
@@ -188,8 +191,14 @@ describe('dependency.js', () => {
                 version: '2.3.4'
               }
             ]
+            break
           default:
-            return []
+            dependencies = []
+            break
+        }
+        return {
+          dependencies: dependencies,
+          matchVersion: version
         }
       })
       const actual = await dependency.computeDependencyTreeForPackage('package', 'latest')
@@ -227,13 +236,104 @@ describe('dependency.js', () => {
         ]
       })
       expect(_getPackageDependenciesStub.callCount).to.equal(6)
+      expect(getCachedValueStub.callCount).to.equal(0)
+      expect(setCachedValueSpy.callCount).to.equal(6)
+    })
+
+    it('recursively gets dependencies if not cached', async () => {
+      isCachedStub.returns(false)
+      _getPackageDependenciesStub.callsFake(async (name, version) => {
+        let dependencies
+        switch (name) {
+          case 'package':
+            dependencies = [
+              {
+                name: 'dep1',
+                version: '1.2.3'
+              },
+              {
+                name: 'dep2',
+                version: '2.3.4'
+              }
+            ]
+            break
+          case 'dep1':
+            dependencies = [
+              {
+                name: 'dep3',
+                version: '3.4.5'
+              }
+            ]
+            break
+          case 'dep2':
+            dependencies = []
+            break
+          case 'dep3':
+            dependencies = [
+              {
+                name: 'dep4',
+                version: '4.5.6'
+              },
+              {
+                name: 'dep2',
+                version: '2.3.4'
+              }
+            ]
+            break
+          default:
+            dependencies = []
+            break
+        }
+        return {
+          dependencies: dependencies,
+          matchVersion: version
+        }
+      })
+      const actual = await dependency.computeDependencyTreeForPackage('package', '1.2.3')
+      expect(actual).to.deep.equal({
+        name: 'package',
+        version: '1.2.3',
+        dependencies: [
+          {
+            name: 'dep1',
+            version: '1.2.3',
+            dependencies: [
+              {
+                name: 'dep3',
+                version: '3.4.5',
+                dependencies: [
+                  {
+                    name: 'dep4',
+                    version: '4.5.6',
+                    dependencies: []
+                  },
+                  {
+                    name: 'dep2',
+                    version: '2.3.4',
+                    dependencies: []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: 'dep2',
+            version: '2.3.4',
+            dependencies: []
+          }
+        ]
+      })
+      expect(_getPackageDependenciesStub.callCount).to.equal(6)
+      expect(getCachedValueStub.callCount).to.equal(0)
+      expect(setCachedValueSpy.callCount).to.equal(6)
     })
 
     it('throws an error when cyclic dependency found', async () => {
       _getPackageDependenciesStub.callsFake(async (name, version) => {
+        let dependencies
         switch (name) {
           case 'package':
-            return [
+            dependencies = [
               {
                 name: 'dep1',
                 version: '1.2.3'
@@ -243,8 +343,14 @@ describe('dependency.js', () => {
                 version: 'other'
               }
             ]
+            break
           default:
-            return []
+            dependencies = []
+            break
+        }
+        return {
+          dependencies: dependencies,
+          matchVersion: version
         }
       })
       try {
