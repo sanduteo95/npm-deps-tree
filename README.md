@@ -52,5 +52,52 @@ The response format is:
 
 ### How to test
 Run `npm t` and this will lint the code, run Mocha tests and gather coverage statistics under `/reports`, and finally generate documentation under `/docs`.
-
 ### Performance statistics
+Using [Artillery](https://artillery.io/), I have gathered some statistics. These depend on external factors but show the benefits of caching.
+
+To install Artillery, run:
+```sh
+npm i -g artillery
+```
+
+Without caching, we see that without caching 95% and 99% of the requests take 12s, whereas the minimum one can take is 4s.
+```sh
+artillery quick -c 10 -n 20 http://localhost:3000/package/express
+
+Summary report @ 15:07:02(+0000) 2021-02-13
+  Scenarios launched:  10
+  Scenarios completed: 10
+  Requests completed:  200
+  Mean response/sec: 1.07
+  Response time (msec):
+    min: 4836
+    max: 13096.9
+    median: 9047.1
+    p95: 11433.9
+    p99: 12509.3
+  Scenario counts:
+    0: 10 (100%)
+  Codes:
+    200: 200
+```
+
+With caching, we see that 95% and 99% percent of the requests take 2s - 3s, whereas the minimum one can take is 0.6s:
+```sh
+artillery quick -c 10 -n 20 http://localhost:3000/package/express
+
+Summary report @ 15:20:14(+0000) 2021-02-13
+  Scenarios launched:  10
+  Scenarios completed: 10
+  Requests completed:  200
+  Mean response/sec: 5.25
+  Response time (msec):
+    min: 693.3
+    max: 3015.6
+    median: 1811.6
+    p95: 2525.9
+    p99: 2911.3
+  Scenario counts:
+    0: 10 (100%)
+  Codes:
+    200: 200
+```
