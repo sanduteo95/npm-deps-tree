@@ -15,7 +15,8 @@ const _setRetries = retries => {
  * Downloads the package with the given version.
  * @param {string} name The name of the package.
  * @param {string} version The version of the package.
- * @returns {Object} The package.
+ * @returns {Promise} The package.
+ * @function
  */
 const downloadPackageWithVersion = async (name, version) => {
   try {
@@ -32,7 +33,8 @@ const downloadPackageWithVersion = async (name, version) => {
  * Downloads the package versions and looks for the package that matches the given version.
  * @param {string} name The name of the package.
  * @param {string} version The semver version of the package.
- * @returns {Object} The package.
+ * @returns {Promise} The package.
+ * @function
  */
 const downloadPackage = async (name, version) => {
   try {
@@ -49,7 +51,13 @@ const downloadPackage = async (name, version) => {
   }
 }
 
-// Helper function to make the registry call
+/**
+ * Helper function to make the registry call
+ * @param {string} The path to call
+ * @returns {Promise} The package
+ * @inner
+ * @function
+ */
 const _makeRegistryCall = async path => {
   const url = `${REGISTRY_URL}${path}`
   try {
@@ -67,7 +75,14 @@ const _makeRegistryCall = async path => {
   }
 }
 
-// Helper function to find the first matching version in reverse
+/**
+ * Helper function to find the first matching version in reverse
+ * @param {string} The available versions
+ * @param {string} The provided version to match them to
+ * @returns {string} The matching version
+ * @inner
+ * @function
+ */
 const _getMatchingVersion = (versions, version) => {
   // look at available versions in reverse order and find the first version that matches
   return Object.keys(versions).slice(0).reverse().find(availableVersion => {

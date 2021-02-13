@@ -104,6 +104,893 @@
     
 
     
+    <h4 class="name" id="_formatDependencies"><span class="type-signature"></span>_formatDependencies<span class="signature">(The, The)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Helper function to format dependencies into arrays of objects.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>The</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">name of the package.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>The</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">version of the package.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_dependency.js.html">lib/dependency.js</a>, <a href="lib_dependency.js.html#line112">line 112</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The resulting array: [{ "name": <dependency name>, "version": <dependency version>"}]
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_getMatchingVersion"><span class="type-signature"></span>_getMatchingVersion<span class="signature">(The, The)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Helper function to find the first matching version in reverse
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>The</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">available versions</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>The</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">provided version to match them to</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_registry.js.html">utils/registry.js</a>, <a href="utils_registry.js.html#line86">line 86</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The matching version
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_getPackageDependencies"><span class="type-signature">(async) </span>_getPackageDependencies<span class="signature">(The, The)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Helper function to get a package's dependencies
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>The</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">name of the package.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>The</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">version of the package.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_dependency.js.html">lib/dependency.js</a>, <a href="lib_dependency.js.html#line80">line 80</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    An object containing the dependencies and matchVersion: { "dependencies": <>, "matchVersion": <>"}
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_hasCyclicDependency"><span class="type-signature"></span>_hasCyclicDependency<span class="signature">(The, The)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Helper function for deciding if there's a self-referred dependency in the list of dependencies
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>The</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">dependencies.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>The</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">name of the package.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_dependency.js.html">lib/dependency.js</a>, <a href="lib_dependency.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Flag signaling if there is a cyclic dependency.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_makeRegistryCall"><span class="type-signature">(async) </span>_makeRegistryCall<span class="signature">(The)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Helper function to make the registry call
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>The</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">path to call</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_registry.js.html">utils/registry.js</a>, <a href="utils_registry.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The package
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="computeDependencyTreeForPackage"><span class="type-signature">(async) </span>computeDependencyTreeForPackage<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
@@ -113,7 +1000,9 @@
 
 <div class="description">
     Computes the dependency tree for a given package with a given version.
-It recursively builds the dependency tree for each dependency until no more can be found.
+It recursively builds the dependency tree for each dependency until no more dependencies can be found.
+At the end, it caches the result.
+If the package was previously cached for the provided version, it is returned without further computation.
 </div>
 
 
@@ -229,7 +1118,7 @@ It recursively builds the dependency tree for each dependency until no more can 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_dependency.js.html">lib/dependency.js</a>, <a href="lib_dependency.js.html#line13">line 13</a>
+        <a href="lib_dependency.js.html">lib/dependency.js</a>, <a href="lib_dependency.js.html#line16">line 16</a>
     </li></ul></dd>
     
 
@@ -287,7 +1176,7 @@ It recursively builds the dependency tree for each dependency until no more can 
     
 
     
-    <h4 class="name" id="downloadPackage"><span class="type-signature">(async) </span>downloadPackage<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="downloadPackage"><span class="type-signature">(async) </span>downloadPackage<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -411,7 +1300,7 @@ It recursively builds the dependency tree for each dependency until no more can 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_registry.js.html">utils/registry.js</a>, <a href="utils_registry.js.html#line37">line 37</a>
+        <a href="utils_registry.js.html">utils/registry.js</a>, <a href="utils_registry.js.html#line39">line 39</a>
     </li></ul></dd>
     
 
@@ -451,7 +1340,7 @@ It recursively builds the dependency tree for each dependency until no more can 
     </dt>
     <dd>
         
-<span class="param-type">Object</span>
+<span class="param-type">Promise</span>
 
 
     </dd>
@@ -469,7 +1358,7 @@ It recursively builds the dependency tree for each dependency until no more can 
     
 
     
-    <h4 class="name" id="downloadPackageWithVersion"><span class="type-signature">(async) </span>downloadPackageWithVersion<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="downloadPackageWithVersion"><span class="type-signature">(async) </span>downloadPackageWithVersion<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -593,7 +1482,7 @@ It recursively builds the dependency tree for each dependency until no more can 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_registry.js.html">utils/registry.js</a>, <a href="utils_registry.js.html#line20">line 20</a>
+        <a href="utils_registry.js.html">utils/registry.js</a>, <a href="utils_registry.js.html#line21">line 21</a>
     </li></ul></dd>
     
 
@@ -633,7 +1522,7 @@ It recursively builds the dependency tree for each dependency until no more can 
     </dt>
     <dd>
         
-<span class="param-type">Object</span>
+<span class="param-type">Promise</span>
 
 
     </dd>
@@ -775,7 +1664,7 @@ It recursively builds the dependency tree for each dependency until no more can 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_error.js.html">utils/error.js</a>, <a href="utils_error.js.html#line7">line 7</a>
+        <a href="utils_error.js.html">utils/error.js</a>, <a href="utils_error.js.html#line8">line 8</a>
     </li></ul></dd>
     
 
@@ -935,7 +1824,7 @@ Throws an error if invalid.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_validation.js.html">utils/validation.js</a>, <a href="utils_validation.js.html#line13">line 13</a>
+        <a href="utils_validation.js.html">utils/validation.js</a>, <a href="utils_validation.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -1094,7 +1983,7 @@ Throws an error if invalid.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_validation.js.html">utils/validation.js</a>, <a href="utils_validation.js.html#line28">line 28</a>
+        <a href="utils_validation.js.html">utils/validation.js</a>, <a href="utils_validation.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -1162,13 +2051,13 @@ Throws an error if invalid.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#computeDependencyTreeForPackage">computeDependencyTreeForPackage</a></li><li><a href="global.html#downloadPackage">downloadPackage</a></li><li><a href="global.html#downloadPackageWithVersion">downloadPackageWithVersion</a></li><li><a href="global.html#formatError">formatError</a></li><li><a href="global.html#validateName">validateName</a></li><li><a href="global.html#validateVersion">validateVersion</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#_formatDependencies">_formatDependencies</a></li><li><a href="global.html#_getMatchingVersion">_getMatchingVersion</a></li><li><a href="global.html#_getPackageDependencies">_getPackageDependencies</a></li><li><a href="global.html#_hasCyclicDependency">_hasCyclicDependency</a></li><li><a href="global.html#_makeRegistryCall">_makeRegistryCall</a></li><li><a href="global.html#computeDependencyTreeForPackage">computeDependencyTreeForPackage</a></li><li><a href="global.html#downloadPackage">downloadPackage</a></li><li><a href="global.html#downloadPackageWithVersion">downloadPackageWithVersion</a></li><li><a href="global.html#formatError">formatError</a></li><li><a href="global.html#validateName">validateName</a></li><li><a href="global.html#validateVersion">validateVersion</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Feb 13 2021 14:30:15 GMT+0000 (Greenwich Mean Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Feb 13 2021 15:00:55 GMT+0000 (Greenwich Mean Time)
 </footer>
 
 <script> prettyPrint(); </script>

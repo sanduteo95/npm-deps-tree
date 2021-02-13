@@ -13,7 +13,14 @@ const _clear = () => {
   cache.flushAll()
 }
 
-// helper function to compute the key stored in the cache
+/**
+ * Helper function to compute the key stored in the cache from the name and version
+ * @param {string} The name.
+ * @param {string} The version.
+ * @returns {string} The resulting key: "<name>:<version>".
+ * @inner
+ * @function
+ */
 const _getKey = (name, version) => {
   return `${name}:${version}`
 }
@@ -23,6 +30,7 @@ const _getKey = (name, version) => {
  * @param {string} name The name of the package.
  * @param {string} version The version of the package.
  * @returns {boolean} Whether it is cached or not.
+ * @function
  */
 const isCached = (name, version) => {
   return cache.has(_getKey(name, version))
@@ -33,6 +41,7 @@ const isCached = (name, version) => {
  * @param {string} name The name of the package.
  * @param {string} version The version of the package.
  * @returns {Object} The cached value for the given name and version pair.
+ * @function
  */
 const getCachedValue = (name, version) => {
   return cache.get(_getKey(name, version))
@@ -43,6 +52,7 @@ const getCachedValue = (name, version) => {
  * @param {string} name The name of the package.
  * @param {string} version The version of the package.
  * @returns {void}
+ * @function
  */
 const setCachedValue = (name, version, value) => {
   cache.set(_getKey(name, version), value, EXPIRY)

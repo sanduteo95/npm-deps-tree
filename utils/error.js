@@ -3,6 +3,7 @@
  * @param {number} status The status code for the response.
  * @param {string} version The message for the error.
  * @returns {Object} An error.
+ * @function
  */
 const formatError = (status, message) => {
   const err = new Error(message)

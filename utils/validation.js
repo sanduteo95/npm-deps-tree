@@ -9,6 +9,7 @@ const VERSION_REGEX = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|\*||x\[1-9]\d*)(-[a-zA-Z\
  * Throws an error if invalid.
  * @param {string} name The name of the package.
  * @returns {string} The validated name or throws an error.
+ * @function
  */
 const validateName = name => {
   const { validForNewPackages, validForOldPackages } = validate(name)
@@ -24,6 +25,7 @@ const validateName = name => {
  * Formats and validates the version based on semver rules: https://docs.npmjs.com/about-semantic-versioning.
  * @param {string} version The version of the package.
  * @returns {string} The validated version or throws an error.
+ * @function
  */
 const validateVersion = version => {
   // latest is allowed

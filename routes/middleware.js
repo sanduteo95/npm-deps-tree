@@ -3,7 +3,14 @@ const { formatError } = require('../utils/error')
 const logger = require('../utils/logger')
 const { validateName, validateVersion } = require('../utils/validation')
 
-// Middleware for validating the package name and version
+/**
+ * Middleware for validating the package name and version
+ * @param {Object} The Express request.
+ * @param {Object} The Express response.
+ * @param {Function} The Express next callback.
+ * @returns {void}
+ * @function
+ */
 const validate = (req, res, next) => {
   logger.info(`Running validation middleware on ${req.params.package}:${req.body !== undefined && req.body.version !== undefined ? req.body.version : 'latest'}`)
   try {
@@ -18,12 +25,26 @@ const validate = (req, res, next) => {
   next()
 }
 
-// Middleware for undefined routes
+/**
+ * Middleware for undefined routes
+ * @param {Object} The Express request.
+ * @param {Object} The Express response.
+ * @param {Function} The Express next callback.
+ * @returns {void}
+ * @function
+ */
 const notFound = (req, res, next) => {
   next(formatError(404, 'Not implemented!'))
 }
 
-// Middleware for returning errors
+/**
+ * Middleware for returning errors
+ * @param {Object} The Express request.
+ * @param {Object} The Express response.
+ * @param {Function} The Express next callback.
+ * @returns {void}
+ * @function
+ */
 const error = (err, req, res, next) => {
   res.status(err.status || /* istanbul ignore next */500)
   res.send({
