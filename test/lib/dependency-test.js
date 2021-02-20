@@ -37,17 +37,8 @@ describe('dependency.js', () => {
         downloadPackageWithVersionStub.resolves(testDependencies)
         const actual = await dependency.internal._getPackageDependencies('package', '1.2.3')
         expect(actual).to.deep.equal({
-          dependencies: [
-            {
-              name: 'dep1',
-              version: '1.2.3'
-            },
-            {
-              name: 'dep2',
-              version: '2.3.4'
-            }
-          ],
-          matchVersion: 'version'
+          dependencies: testDependencies.dependencies,
+          matchVersion: testDependencies.version
         })
         expect(downloadPackageWithVersionStub.callCount).to.equal(1)
         expect(downloadPackageStub.callCount).to.equal(0)
@@ -62,19 +53,10 @@ describe('dependency.js', () => {
           }
         }
         downloadPackageStub.resolves(testDependencies)
-        const actual = await dependency.internal._getPackageDependencies('package', '>= 1.0.0 <2', true)
+        const actual = await dependency.internal._getPackageDependencies('package', '>= 1.0.0 <2')
         expect(actual).to.deep.equal({
-          dependencies: [
-            {
-              name: 'dep1',
-              version: '1.2.3'
-            },
-            {
-              name: 'dep2',
-              version: '2.3.4'
-            }
-          ],
-          matchVersion: 'version'
+          dependencies: testDependencies.dependencies,
+          matchVersion: testDependencies.version
         })
         expect(downloadPackageWithVersionStub.callCount).to.equal(0)
         expect(downloadPackageStub.callCount).to.equal(1)
@@ -87,8 +69,8 @@ describe('dependency.js', () => {
         downloadPackageWithVersionStub.resolves(testDependencies)
         const actual = await dependency.internal._getPackageDependencies('package', '1.2.3')
         expect(actual).to.deep.equal({
-          dependencies: [],
-          matchVersion: 'version'
+          dependencies: undefined,
+          matchVersion: testDependencies.version
         })
         expect(downloadPackageWithVersionStub.callCount).to.equal(1)
         expect(downloadPackageStub.callCount).to.equal(0)
@@ -143,9 +125,10 @@ describe('dependency.js', () => {
       getCachedValueStub.returns([])
       const actual = await dependency.computeDependencyTreeForPackage('package', '1.2.3')
       expect(actual).to.deep.equal({
-        name: 'package',
-        version: '1.2.3',
-        dependencies: []
+        package: {
+          version: '1.2.3',
+          dependencies: []
+        }
       })
       expect(_getPackageDependenciesStub.callCount).to.equal(0)
       expect(getCachedValueStub.callCount).to.equal(1)
@@ -158,42 +141,27 @@ describe('dependency.js', () => {
         let dependencies
         switch (name) {
           case 'package':
-            dependencies = [
-              {
-                name: 'dep1',
-                version: '1.2.3'
-              },
-              {
-                name: 'dep2',
-                version: '2.3.4'
-              }
-            ]
+            dependencies = {
+              dep1: '1.2.3',
+              dep2: '2.3.4'
+            }
             break
           case 'dep1':
-            dependencies = [
-              {
-                name: 'dep3',
-                version: '3.4.5'
-              }
-            ]
+            dependencies = {
+              dep3: '3.4.5'
+            }
             break
           case 'dep2':
-            dependencies = []
+            dependencies = {}
             break
           case 'dep3':
-            dependencies = [
-              {
-                name: 'dep4',
-                version: '4.5.6'
-              },
-              {
-                name: 'dep2',
-                version: '2.3.4'
-              }
-            ]
+            dependencies = {
+              dep4: '4.5.6',
+              dep2: '2.3.4'
+            }
             break
           default:
-            dependencies = []
+            dependencies = {}
             break
         }
         return {
@@ -203,37 +171,43 @@ describe('dependency.js', () => {
       })
       const actual = await dependency.computeDependencyTreeForPackage('package', 'latest')
       expect(actual).to.deep.equal({
-        name: 'package',
-        version: 'latest',
-        dependencies: [
-          {
-            name: 'dep1',
-            version: '1.2.3',
-            dependencies: [
-              {
-                name: 'dep3',
-                version: '3.4.5',
+        package: {
+          version: 'latest',
+          dependencies: [
+            {
+              dep1: {
+                version: '1.2.3',
                 dependencies: [
                   {
-                    name: 'dep4',
-                    version: '4.5.6',
-                    dependencies: []
-                  },
-                  {
-                    name: 'dep2',
-                    version: '2.3.4',
-                    dependencies: []
+                    dep3: {
+                      version: '3.4.5',
+                      dependencies: [
+                        {
+                          dep4: {
+                            version: '4.5.6',
+                            dependencies: []
+                          }
+                        },
+                        {
+                          dep2: {
+                            version: '2.3.4',
+                            dependencies: []
+                          }
+                        }
+                      ]
+                    }
                   }
                 ]
               }
-            ]
-          },
-          {
-            name: 'dep2',
-            version: '2.3.4',
-            dependencies: []
-          }
-        ]
+            },
+            {
+              dep2: {
+                version: '2.3.4',
+                dependencies: []
+              }
+            }
+          ]
+        }
       })
       expect(_getPackageDependenciesStub.callCount).to.equal(6)
       expect(getCachedValueStub.callCount).to.equal(0)
@@ -246,39 +220,24 @@ describe('dependency.js', () => {
         let dependencies
         switch (name) {
           case 'package':
-            dependencies = [
-              {
-                name: 'dep1',
-                version: '1.2.3'
-              },
-              {
-                name: 'dep2',
-                version: '2.3.4'
-              }
-            ]
+            dependencies = {
+              dep1: '1.2.3',
+              dep2: '2.3.4'
+            }
             break
           case 'dep1':
-            dependencies = [
-              {
-                name: 'dep3',
-                version: '3.4.5'
-              }
-            ]
+            dependencies = {
+              dep3: '3.4.5'
+            }
             break
           case 'dep2':
-            dependencies = []
+            dependencies = {}
             break
           case 'dep3':
-            dependencies = [
-              {
-                name: 'dep4',
-                version: '4.5.6'
-              },
-              {
-                name: 'dep2',
-                version: '2.3.4'
-              }
-            ]
+            dependencies = {
+              dep4: '4.5.6',
+              dep2: '2.3.4'
+            }
             break
           default:
             dependencies = []
@@ -291,37 +250,43 @@ describe('dependency.js', () => {
       })
       const actual = await dependency.computeDependencyTreeForPackage('package', '1.2.3')
       expect(actual).to.deep.equal({
-        name: 'package',
-        version: '1.2.3',
-        dependencies: [
-          {
-            name: 'dep1',
-            version: '1.2.3',
-            dependencies: [
-              {
-                name: 'dep3',
-                version: '3.4.5',
+        package: {
+          version: '1.2.3',
+          dependencies: [
+            {
+              dep1: {
+                version: '1.2.3',
                 dependencies: [
                   {
-                    name: 'dep4',
-                    version: '4.5.6',
-                    dependencies: []
-                  },
-                  {
-                    name: 'dep2',
-                    version: '2.3.4',
-                    dependencies: []
+                    dep3: {
+                      version: '3.4.5',
+                      dependencies: [
+                        {
+                          dep4: {
+                            version: '4.5.6',
+                            dependencies: []
+                          }
+                        },
+                        {
+                          dep2: {
+                            version: '2.3.4',
+                            dependencies: []
+                          }
+                        }
+                      ]
+                    }
                   }
                 ]
               }
-            ]
-          },
-          {
-            name: 'dep2',
-            version: '2.3.4',
-            dependencies: []
-          }
-        ]
+            },
+            {
+              dep2: {
+                version: '2.3.4',
+                dependencies: []
+              }
+            }
+          ]
+        }
       })
       expect(_getPackageDependenciesStub.callCount).to.equal(6)
       expect(getCachedValueStub.callCount).to.equal(0)
@@ -333,19 +298,13 @@ describe('dependency.js', () => {
         let dependencies
         switch (name) {
           case 'package':
-            dependencies = [
-              {
-                name: 'dep1',
-                version: '1.2.3'
-              },
-              {
-                name: 'package',
-                version: 'other'
-              }
-            ]
+            dependencies = {
+              dep1: '1.2.3',
+              package: 'other'
+            }
             break
           default:
-            dependencies = []
+            dependencies = {}
             break
         }
         return {

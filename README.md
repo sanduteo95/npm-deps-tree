@@ -36,17 +36,19 @@ curl -X POST http://localhost:3000/package/express -d '{ "version": "latest" }'
 The response format is:
 ```
 {
-  "name": "<package name>",
-  "version": "<package version>",
-  "dependencies": [
-    {
-      "name": "<dependency name>",
-      "version": "<dependency version>",
-      "dependencies": [
-          ...
-      ]
-    }
-  ]
+  "<package name>": {
+    "version": "<package version>",
+    "dependencies": [
+      {
+        "<dependency name>": {
+          "version": "<dependency version>",
+          "dependencies": {
+              ...
+          }
+        }
+      }
+    ]
+  }
 }
 ```
 
