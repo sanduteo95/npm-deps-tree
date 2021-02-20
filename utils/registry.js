@@ -86,7 +86,7 @@ const _makeRegistryCall = async path => {
  */
 const _getMatchingVersion = (versions, version) => {
   // look at available versions in reverse order and find the first version that matches
-  return Object.keys(versions).slice(0).reverse().find(availableVersion => {
+  return Object.keys(versions).reverse().find(availableVersion => {
     return semver.satisfies(availableVersion, version)
   })
 }
