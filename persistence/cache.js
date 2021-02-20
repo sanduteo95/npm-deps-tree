@@ -15,8 +15,8 @@ const _clear = () => {
 
 /**
  * Helper function to compute the key stored in the cache from the name and version
- * @param {string} The name.
- * @param {string} The version.
+ * @param {string} name The name.
+ * @param {string} version The version.
  * @returns {string} The resulting key: "<name>:<version>".
  * @inner
  * @function

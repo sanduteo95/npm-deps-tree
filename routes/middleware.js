@@ -5,9 +5,9 @@ const { validateName, validateVersion } = require('../utils/validation')
 
 /**
  * Middleware for validating the package name and version
- * @param {Object} The Express request.
- * @param {Object} The Express response.
- * @param {Function} The Express next callback.
+ * @param {Object} req The Express request.
+ * @param {Object} res The Express response.
+ * @param {Function} next The Express next callback.
  * @returns {void}
  * @function
  */
@@ -17,9 +17,9 @@ const validate = (req, res, next) => {
     logger.info('Validating package name and version')
     req.name = validateName(req.params.package)
     req.version = req.body !== undefined && req.body.version !== undefined ? validateVersion(req.body.version) : 'latest'
-  } catch (error) {
-    logger.error('Package name or version was invalid', { err: error })
-    next(formatError(400, error.message))
+  } catch (err) {
+    logger.error('Package name or version was invalid', { err: err })
+    next(formatError(400, err.message))
   }
 
   next()
@@ -27,9 +27,9 @@ const validate = (req, res, next) => {
 
 /**
  * Middleware for undefined routes
- * @param {Object} The Express request.
- * @param {Object} The Express response.
- * @param {Function} The Express next callback.
+ * @param {Object} req The Express request.
+ * @param {Object} res The Express response.
+ * @param {Function} next The Express next callback.
  * @returns {void}
  * @function
  */
@@ -39,9 +39,9 @@ const notFound = (req, res, next) => {
 
 /**
  * Middleware for returning errors
- * @param {Object} The Express request.
- * @param {Object} The Express response.
- * @param {Function} The Express next callback.
+ * @param {Object} req The Express request.
+ * @param {Object} res The Express response.
+ * @param {Function} next The Express next callback.
  * @returns {void}
  * @function
  */

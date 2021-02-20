@@ -9,10 +9,10 @@ const { validate } = require('./middleware')
 
 /**
  * Helper function that handles passing over the computation of the dependency tree
- * @param {Object} The Express request.
- * @param {Object} The Express response.
- * @param {Function} The Express next callback.
- * @returns {void}
+ * @param {Object} req The Express request.
+ * @param {Object} res The Express response.
+ * @param {Function} next The Express next callback.
+ * @returns {Promise<void>}
  * @inner
  * @function
  */

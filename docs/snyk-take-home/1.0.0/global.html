@@ -104,7 +104,7 @@
     
 
     
-    <h4 class="name" id="_formatDependencies"><span class="type-signature"></span>_formatDependencies<span class="signature">(The, The)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    <h4 class="name" id="_formatDependencies"><span class="type-signature"></span>_formatDependencies<span class="signature">(dependencies)</span><span class="type-signature"> &rarr; {Array}</span></h4>
     
 
     
@@ -148,13 +148,13 @@
 
         <tr>
             
-                <td class="name"><code>The</code></td>
+                <td class="name"><code>dependencies</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Object</span>
 
 
             
@@ -164,30 +164,7 @@
 
             
 
-            <td class="description last">name of the package.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>The</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">version of the package.</td>
+            <td class="description last">The package dependencies</td>
         </tr>
 
     
@@ -286,7 +263,7 @@
     
 
     
-    <h4 class="name" id="_getMatchingVersion"><span class="type-signature"></span>_getMatchingVersion<span class="signature">(The, The)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="_getMatchingVersion"><span class="type-signature"></span>_getMatchingVersion<span class="signature">(versions, version)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -330,13 +307,13 @@
 
         <tr>
             
-                <td class="name"><code>The</code></td>
+                <td class="name"><code>versions</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Array</span>
 
 
             
@@ -346,14 +323,14 @@
 
             
 
-            <td class="description last">available versions</td>
+            <td class="description last">The available versions</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>The</code></td>
+                <td class="name"><code>version</code></td>
             
 
             <td class="type">
@@ -369,7 +346,7 @@
 
             
 
-            <td class="description last">provided version to match them to</td>
+            <td class="description last">The provided version to match them to</td>
         </tr>
 
     
@@ -410,7 +387,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_registry.js.html">utils/registry.js</a>, <a href="utils_registry.js.html#line86">line 86</a>
+        <a href="utils_registry.js.html">utils/registry.js</a>, <a href="utils_registry.js.html#line87">line 87</a>
     </li></ul></dd>
     
 
@@ -468,7 +445,7 @@
     
 
     
-    <h4 class="name" id="_getPackageDependencies"><span class="type-signature">(async) </span>_getPackageDependencies<span class="signature">(The, The)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="_getPackageDependencies"><span class="type-signature">(async) </span>_getPackageDependencies<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -512,7 +489,7 @@
 
         <tr>
             
-                <td class="name"><code>The</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
@@ -528,14 +505,14 @@
 
             
 
-            <td class="description last">name of the package.</td>
+            <td class="description last">The name of the package.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>The</code></td>
+                <td class="name"><code>version</code></td>
             
 
             <td class="type">
@@ -551,7 +528,7 @@
 
             
 
-            <td class="description last">version of the package.</td>
+            <td class="description last">The version of the package.</td>
         </tr>
 
     
@@ -632,7 +609,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Object</span>
+<span class="param-type">Promise.&lt;Object></span>
 
 
     </dd>
@@ -650,7 +627,7 @@
     
 
     
-    <h4 class="name" id="_hasCyclicDependency"><span class="type-signature"></span>_hasCyclicDependency<span class="signature">(The, The)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="_hasCyclicDependency"><span class="type-signature"></span>_hasCyclicDependency<span class="signature">(dependencies, name)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
 
     
@@ -694,7 +671,7 @@
 
         <tr>
             
-                <td class="name"><code>The</code></td>
+                <td class="name"><code>dependencies</code></td>
             
 
             <td class="type">
@@ -710,14 +687,14 @@
 
             
 
-            <td class="description last">dependencies.</td>
+            <td class="description last">The dependencies.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>The</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
@@ -733,7 +710,7 @@
 
             
 
-            <td class="description last">name of the package.</td>
+            <td class="description last">The name of the package.</td>
         </tr>
 
     
@@ -832,7 +809,7 @@
     
 
     
-    <h4 class="name" id="_makeRegistryCall"><span class="type-signature">(async) </span>_makeRegistryCall<span class="signature">(The)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="_makeRegistryCall"><span class="type-signature">(async) </span>_makeRegistryCall<span class="signature">(path)</span><span class="type-signature"> &rarr; {Promise.&lt;any>}</span></h4>
     
 
     
@@ -876,7 +853,7 @@
 
         <tr>
             
-                <td class="name"><code>The</code></td>
+                <td class="name"><code>path</code></td>
             
 
             <td class="type">
@@ -892,7 +869,7 @@
 
             
 
-            <td class="description last">path to call</td>
+            <td class="description last">The path to call</td>
         </tr>
 
     
@@ -973,7 +950,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise</span>
+<span class="param-type">Promise.&lt;any></span>
 
 
     </dd>
@@ -991,7 +968,7 @@
     
 
     
-    <h4 class="name" id="computeDependencyTreeForPackage"><span class="type-signature">(async) </span>computeDependencyTreeForPackage<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="computeDependencyTreeForPackage"><span class="type-signature">(async) </span>computeDependencyTreeForPackage<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -1158,7 +1135,7 @@ If the package was previously cached for the provided version, it is returned wi
     </dt>
     <dd>
         
-<span class="param-type">Object</span>
+<span class="param-type">Promise.&lt;Object></span>
 
 
     </dd>
@@ -1176,7 +1153,7 @@ If the package was previously cached for the provided version, it is returned wi
     
 
     
-    <h4 class="name" id="downloadPackage"><span class="type-signature">(async) </span>downloadPackage<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="downloadPackage"><span class="type-signature">(async) </span>downloadPackage<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -1340,7 +1317,7 @@ If the package was previously cached for the provided version, it is returned wi
     </dt>
     <dd>
         
-<span class="param-type">Promise</span>
+<span class="param-type">Promise.&lt;Object></span>
 
 
     </dd>
@@ -1358,7 +1335,7 @@ If the package was previously cached for the provided version, it is returned wi
     
 
     
-    <h4 class="name" id="downloadPackageWithVersion"><span class="type-signature">(async) </span>downloadPackageWithVersion<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="downloadPackageWithVersion"><span class="type-signature">(async) </span>downloadPackageWithVersion<span class="signature">(name, version)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -1522,7 +1499,7 @@ If the package was previously cached for the provided version, it is returned wi
     </dt>
     <dd>
         
-<span class="param-type">Promise</span>
+<span class="param-type">Promise.&lt;Object></span>
 
 
     </dd>
@@ -1540,7 +1517,7 @@ If the package was previously cached for the provided version, it is returned wi
     
 
     
-    <h4 class="name" id="formatError"><span class="type-signature"></span>formatError<span class="signature">(status, version)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="formatError"><span class="type-signature"></span>formatError<span class="signature">(status, message)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -1607,7 +1584,7 @@ If the package was previously cached for the provided version, it is returned wi
 
         <tr>
             
-                <td class="name"><code>version</code></td>
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
@@ -2057,7 +2034,7 @@ Throws an error if invalid.
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Feb 13 2021 17:11:39 GMT+0000 (Greenwich Mean Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Feb 20 2021 18:07:56 GMT+0000 (Greenwich Mean Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -15,7 +15,7 @@ const _setRetries = retries => {
  * Downloads the package with the given version.
  * @param {string} name The name of the package.
  * @param {string} version The version of the package.
- * @returns {Promise} The package.
+ * @returns {Promise<Object>} The package.
  * @function
  */
 const downloadPackageWithVersion = async (name, version) => {
@@ -33,7 +33,7 @@ const downloadPackageWithVersion = async (name, version) => {
  * Downloads the package versions and looks for the package that matches the given version.
  * @param {string} name The name of the package.
  * @param {string} version The semver version of the package.
- * @returns {Promise} The package.
+ * @returns {Promise<Object>} The package.
  * @function
  */
 const downloadPackage = async (name, version) => {
@@ -53,8 +53,8 @@ const downloadPackage = async (name, version) => {
 
 /**
  * Helper function to make the registry call
- * @param {string} The path to call
- * @returns {Promise} The package
+ * @param {string} path The path to call
+ * @returns {Promise<any>} The package
  * @inner
  * @function
  */
@@ -62,6 +62,7 @@ const _makeRegistryCall = async path => {
   const url = `${REGISTRY_URL}${path}`
   try {
     logger.info(`Calling out to ${url}`)
+    // @ts-ignore
     return await got.get(url, { responseType: 'json', retries: RETRIES })
   } catch (error) {
     /* istanbul ignore next */
@@ -77,8 +78,8 @@ const _makeRegistryCall = async path => {
 
 /**
  * Helper function to find the first matching version in reverse
- * @param {string} The available versions
- * @param {string} The provided version to match them to
+ * @param {Array} versions The available versions
+ * @param {string} version The provided version to match them to
  * @returns {string} The matching version
  * @inner
  * @function
