@@ -66,17 +66,17 @@ Without caching, we see that without caching 95% and 99% of the requests take 12
 ```sh
 artillery quick -c 10 -n 20 http://localhost:3000/package/express
 
-Summary report @ 15:07:02(+0000) 2021-02-13
+Summary report @ 18:47:57(+0000) 2021-02-20
   Scenarios launched:  10
   Scenarios completed: 10
   Requests completed:  200
-  Mean response/sec: 1.07
+  Mean response/sec: 1.62
   Response time (msec):
-    min: 4836
-    max: 13096.9
-    median: 9047.1
-    p95: 11433.9
-    p99: 12509.3
+    min: 1552.8
+    max: 10919.2
+    median: 5934.6
+    p95: 8162.1
+    p99: 9758.3
   Scenario counts:
     0: 10 (100%)
   Codes:
@@ -87,17 +87,17 @@ With caching, we see that 95% and 99% percent of the requests take 2s - 3s, wher
 ```sh
 artillery quick -c 10 -n 20 http://localhost:3000/package/express
 
-Summary report @ 15:20:14(+0000) 2021-02-13
+Summary report @ 18:49:23(+0000) 2021-02-20
   Scenarios launched:  10
   Scenarios completed: 10
   Requests completed:  200
-  Mean response/sec: 5.25
+  Mean response/sec: 5.97
   Response time (msec):
-    min: 693.3
-    max: 3015.6
-    median: 1811.6
-    p95: 2525.9
-    p99: 2911.3
+    min: 343
+    max: 4577.2
+    median: 1385.3
+    p95: 3296.6
+    p99: 4186.5
   Scenario counts:
     0: 10 (100%)
   Codes:

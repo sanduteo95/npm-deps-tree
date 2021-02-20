@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Take-home test from Snyk",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "NODE_ENV=production; nodemon server.js",
     "pretest": "standard --fix",
     "test": "nyc mocha test/**/*-test.js test/*-test.js",
     "posttest": "jsdoc --recurse lib/ utils/ --destination ./docs --package ./package.json --readme ./README.md"
@@ -17,15 +17,15 @@
     "got": "^11.8.1",
     "logging": "^3.3.0",
     "node-cache": "^5.1.2",
+    "nodemon": "^2.0.7",
     "semver": "^7.3.4",
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
     "chai": "^4.3.0",
     "jsdoc": "^3.6.6",
-    "mocha": "^8.2.1",
+    "mocha": "^8.3.0",
     "nock": "^13.0.7",
-    "nodemon": "^2.0.7",
     "nyc": "^15.1.0",
     "sinon": "^9.2.4",
     "sinon-chai": "^3.5.0",
