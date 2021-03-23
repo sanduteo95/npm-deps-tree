@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import chai from 'chai'
 import sinon from 'sinon'
 import request from 'supertest'

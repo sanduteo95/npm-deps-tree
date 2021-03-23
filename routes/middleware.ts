@@ -39,9 +39,10 @@ export const notFound = (req, res, next) => {
 
 /**
  * Middleware for returning errors
+ * @param {Object} err The error.
  * @param {Object} req The Express request.
  * @param {Object} res The Express response.
- * @param {Function} next The Express next callback.
+ * @param {Object} next The Express next middleware.
  * @returns {void}
  * @function
  */
@@ -50,4 +51,5 @@ export const error = (err, req, res, next) => {
   res.send({
     error: err.message
   })
+  next()
 }

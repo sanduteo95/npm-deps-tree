@@ -4,9 +4,10 @@
   "description": "Take-home test from Snyk",
   "scripts": {
     "start": "NODE_ENV=production; nodemon --watch '**/*.ts' --exec \"ts-node\" server.ts",
-    "pretest": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint . --ext .js,.ts",
+    "pretest": "npm run lint",
     "test": "nyc ts-mocha test/**/*-test.ts test/*-test.ts",
-    "posttest": "jsdoc --recurse lib/ utils/ --destination ./docs --package ./package.json --readme ./README.md"
+    "posttest": "jsdoc --recurse lib/ persistence/ routes/ utils/ --destination ./docs --package ./package.json --readme ./README.md"
   },
   "author": "Teodora Sandu",
   "license": "ISC",

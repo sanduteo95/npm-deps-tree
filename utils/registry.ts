@@ -62,7 +62,7 @@ export const _makeRegistryCall: any = async path => {
   const url = `${REGISTRY_URL}${path}`
   try {
     logger.info(`Calling out to ${url}`)
-    return await got.get(url, { responseType: 'json', retries: RETRIES })
+    return await got.get(url, { responseType: 'json', retry: RETRIES })
   } catch (error) {
     /* istanbul ignore next */
     if (error.response && error.response.body) {
