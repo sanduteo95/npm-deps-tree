@@ -1,13 +1,13 @@
-const got = require('got')
-const semver = require('semver')
+import got from 'got'
+import semver from 'semver'
 
-const logger = require('./logger')
+import logger from './logger'
 
 const REGISTRY_URL = 'https://registry.npmjs.org'
 let RETRIES = 5
 
 // Helper function to set retries for tests
-const _setRetries = retries => {
+export const _setRetries = retries => {
   RETRIES = retries
 }
 
@@ -18,9 +18,9 @@ const _setRetries = retries => {
  * @returns {Promise<Object>} The package.
  * @function
  */
-const downloadPackageWithVersion = async (name, version) => {
+export const downloadPackageWithVersion = async (name, version) => {
   try {
-    const { body } = await module.exports.internal._makeRegistryCall(`/${name}/${version}`)
+    const { body } = await _makeRegistryCall(`/${name}/${version}`)
     logger.info(`Downloaded package ${name}:${version}`)
     return body
   } catch (error) {
@@ -36,9 +36,9 @@ const downloadPackageWithVersion = async (name, version) => {
  * @returns {Promise<Object>} The package.
  * @function
  */
-const downloadPackage = async (name, version) => {
+export const downloadPackage = async (name, version) => {
   try {
-    const { body } = await module.exports.internal._makeRegistryCall(`/${name}`)
+    const { body } = await _makeRegistryCall(`/${name}`)
 
     const matchingVersion = _getMatchingVersion(body.versions, version)
     if (matchingVersion === undefined) {
@@ -58,11 +58,10 @@ const downloadPackage = async (name, version) => {
  * @inner
  * @function
  */
-const _makeRegistryCall = async path => {
+export const _makeRegistryCall: any = async path => {
   const url = `${REGISTRY_URL}${path}`
   try {
     logger.info(`Calling out to ${url}`)
-    // @ts-ignore
     return await got.get(url, { responseType: 'json', retries: RETRIES })
   } catch (error) {
     /* istanbul ignore next */
@@ -89,13 +88,4 @@ const _getMatchingVersion = (versions, version) => {
   return Object.keys(versions).reverse().find(availableVersion => {
     return semver.satisfies(availableVersion, version)
   })
-}
-
-module.exports = {
-  downloadPackageWithVersion,
-  downloadPackage,
-  internal: {
-    _makeRegistryCall,
-    _setRetries
-  }
 }

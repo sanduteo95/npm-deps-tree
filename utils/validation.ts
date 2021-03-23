@@ -1,8 +1,8 @@
-const validate = require('validate-npm-package-name')
+import validate from 'validate-npm-package-name'
 
-const logger = require('./logger')
+import logger from './logger'
 
-const VERSION_REGEX = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|\*||x\[1-9]\d*)(-[a-zA-Z\d][-a-zA-Z.\d]*)?(\+[a-zA-Z\d][-a-zA-Z.\d]*)?/
+export const VERSION_REGEX = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|\*||x\[1-9]\d*)(-[a-zA-Z\d][-a-zA-Z.\d]*)?(\+[a-zA-Z\d][-a-zA-Z.\d]*)?/
 
 /**
  * Validates the name and throws and error if it's invalid by NPM standard.
@@ -11,7 +11,7 @@ const VERSION_REGEX = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|\*||x\[1-9]\d*)(-[a-zA-Z\
  * @returns {string} The validated name or throws an error.
  * @function
  */
-const validateName = name => {
+export const validateName = name => {
   const { validForNewPackages, validForOldPackages } = validate(name)
   if (validForNewPackages || /* istanbul ignore next */ validForOldPackages) {
     return name
@@ -27,7 +27,7 @@ const validateName = name => {
  * @returns {string} The validated version or throws an error.
  * @function
  */
-const validateVersion = version => {
+export const validateVersion = version => {
   // latest is allowed
   if (version === 'latest' || VERSION_REGEX.test(version)) {
     return version
@@ -35,10 +35,4 @@ const validateVersion = version => {
 
   logger.error(`Version ${version} is invalid`)
   throw new Error('The version is invalid.')
-}
-
-module.exports = {
-  validateName,
-  validateVersion,
-  VERSION_REGEX
 }

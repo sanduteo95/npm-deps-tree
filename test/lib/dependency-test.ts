@@ -1,14 +1,16 @@
 /* eslint-disable no-unused-expressions */
-const chai = require('chai')
+/* eslint-disable no-unused-expressions */
+import chai from 'chai'
+import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
+
+import * as registry from '../../utils/registry'
+import * as cache from '../../persistence/cache'
+
+import * as dependency from '../../lib/dependency'
+
 const expect = chai.expect
-const sinon = require('sinon')
-const sinonChai = require('sinon-chai')
 chai.use(sinonChai)
-
-const registry = require('../../utils/registry')
-const cache = require('../../persistence/cache')
-
-const dependency = require('../../lib/dependency')
 
 describe('dependency.js', () => {
   describe('_getPackageDependencies', () => {
@@ -35,7 +37,7 @@ describe('dependency.js', () => {
           }
         }
         downloadPackageWithVersionStub.resolves(testDependencies)
-        const actual = await dependency.internal._getPackageDependencies('package', '1.2.3')
+        const actual = await dependency._getPackageDependencies('package', '1.2.3')
         expect(actual).to.deep.equal({
           dependencies: testDependencies.dependencies,
           matchVersion: testDependencies.version
@@ -53,7 +55,7 @@ describe('dependency.js', () => {
           }
         }
         downloadPackageStub.resolves(testDependencies)
-        const actual = await dependency.internal._getPackageDependencies('package', '>= 1.0.0 <2')
+        const actual = await dependency._getPackageDependencies('package', '>= 1.0.0 <2')
         expect(actual).to.deep.equal({
           dependencies: testDependencies.dependencies,
           matchVersion: testDependencies.version
@@ -67,7 +69,7 @@ describe('dependency.js', () => {
           version: 'version'
         }
         downloadPackageWithVersionStub.resolves(testDependencies)
-        const actual = await dependency.internal._getPackageDependencies('package', '1.2.3')
+        const actual = await dependency._getPackageDependencies('package', '1.2.3')
         expect(actual).to.deep.equal({
           dependencies: undefined,
           matchVersion: testDependencies.version
@@ -91,7 +93,7 @@ describe('dependency.js', () => {
 
       it('re-throws the error', async () => {
         try {
-          await dependency.internal._getPackageDependencies('package', '1.2.3')
+          await dependency._getPackageDependencies('package', '1.2.3')
           expect('Test should fail').to.be.true
         } catch (err) {
           expect(err.message).to.equal('Test')
@@ -110,7 +112,7 @@ describe('dependency.js', () => {
       isCachedStub = sinon.stub(cache, 'isCached')
       getCachedValueStub = sinon.stub(cache, 'getCachedValue')
       setCachedValueSpy = sinon.spy(cache, 'setCachedValue')
-      _getPackageDependenciesStub = sinon.stub(dependency.internal, '_getPackageDependencies')
+      _getPackageDependenciesStub = sinon.stub(dependency, '_getPackageDependencies')
     })
 
     afterEach(() => {
@@ -296,16 +298,13 @@ describe('dependency.js', () => {
     it('throws an error when cyclic dependency found', async () => {
       _getPackageDependenciesStub.callsFake(async (name, version) => {
         let dependencies
-        switch (name) {
-          case 'package':
-            dependencies = {
-              dep1: '1.2.3',
-              package: 'other'
-            }
-            break
-          default:
-            dependencies = {}
-            break
+        if (name === 'package') {
+          dependencies = {
+            dep1: '1.2.3',
+            package: 'other'
+          }
+        } else {
+          dependencies = {}
         }
         return {
           dependencies: dependencies,

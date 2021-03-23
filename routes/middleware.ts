@@ -1,7 +1,7 @@
 
-const { formatError } = require('../utils/error')
-const logger = require('../utils/logger')
-const { validateName, validateVersion } = require('../utils/validation')
+import { formatError } from '../utils/error'
+import logger from '../utils/logger'
+import { validateName, validateVersion } from '../utils/validation'
 
 /**
  * Middleware for validating the package name and version
@@ -11,7 +11,7 @@ const { validateName, validateVersion } = require('../utils/validation')
  * @returns {void}
  * @function
  */
-const validate = (req, res, next) => {
+export const validate = (req, res, next) => {
   logger.info(`Running validation middleware on ${req.params.package}:${req.body !== undefined && req.body.version !== undefined ? req.body.version : 'latest'}`)
   try {
     logger.info('Validating package name and version')
@@ -33,7 +33,7 @@ const validate = (req, res, next) => {
  * @returns {void}
  * @function
  */
-const notFound = (req, res, next) => {
+export const notFound = (req, res, next) => {
   next(formatError(404, 'Not implemented!'))
 }
 
@@ -45,15 +45,9 @@ const notFound = (req, res, next) => {
  * @returns {void}
  * @function
  */
-const error = (err, req, res, next) => {
+export const error = (err, req, res, next) => {
   res.status(err.status || /* istanbul ignore next */500)
   res.send({
     error: err.message
   })
-}
-
-module.exports = {
-  validate,
-  notFound,
-  error
 }

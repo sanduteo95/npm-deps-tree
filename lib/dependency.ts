@@ -1,7 +1,7 @@
-const cache = require('../persistence/cache')
-const logger = require('../utils/logger')
-const utils = require('../utils/registry')
-const { VERSION_REGEX } = require('../utils/validation')
+import * as cache from '../persistence/cache'
+import logger from '../utils/logger'
+import * as utils from '../utils/registry'
+import { VERSION_REGEX } from '../utils/validation'
 
 /**
  * Computes the dependency tree for a given package with a given version.
@@ -13,7 +13,7 @@ const { VERSION_REGEX } = require('../utils/validation')
  * @returns {Promise<Object>} The formatted dependencies.
  * @function
  */
-const computeDependencyTreeForPackage = async (name, version) => {
+export const computeDependencyTreeForPackage = async (name, version) => {
   logger.info(`Computing dependency tree for ${name}:${version}`)
 
   try {
@@ -24,7 +24,7 @@ const computeDependencyTreeForPackage = async (name, version) => {
       dependencyTree = cache.getCachedValue(name, version)
       actualVersion = version
     } else {
-      const { dependencies, matchVersion } = await module.exports.internal._getPackageDependencies(name, version)
+      const { dependencies, matchVersion } = await _getPackageDependencies(name, version)
 
       // look for cyclic dependency first, to avoid extra computation
       if (_hasCyclicDependency(dependencies, name)) {
@@ -32,7 +32,7 @@ const computeDependencyTreeForPackage = async (name, version) => {
         throw new Error('Cannot have cyclic dependencies.')
       }
 
-      const promises = []
+      const promises: Promise<any>[] = []
       for (const dependency in dependencies) {
         promises.push(computeDependencyTreeForPackage(dependency, dependencies[dependency]))
       }
@@ -74,7 +74,7 @@ const _hasCyclicDependency = (dependencies, name) => {
  * @inner
  * @function
  */
-const _getPackageDependencies = async (name, version) => {
+export const _getPackageDependencies = async (name, version) => {
   try {
     logger.info('Retrieving the list of dependencies')
     let downloadedPackage
@@ -96,12 +96,5 @@ const _getPackageDependencies = async (name, version) => {
   } catch (error) {
     logger.error('Failed to retrieve the list of dependencies', { err: error })
     throw error
-  }
-}
-
-module.exports = {
-  computeDependencyTreeForPackage,
-  internal: {
-    _getPackageDependencies
   }
 }

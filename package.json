@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Take-home test from Snyk",
   "scripts": {
-    "start": "NODE_ENV=production; nodemon server.js",
-    "pretest": "standard --fix",
-    "test": "nyc mocha test/**/*-test.js test/*-test.js",
+    "start": "NODE_ENV=production; nodemon --watch '**/*.ts' --exec \"ts-node\" server.ts",
+    "pretest": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "test": "nyc ts-mocha test/**/*-test.ts test/*-test.ts",
     "posttest": "jsdoc --recurse lib/ utils/ --destination ./docs --package ./package.json --readme ./README.md"
   },
   "author": "Teodora Sandu",
@@ -19,38 +19,44 @@
     "node-cache": "^5.1.2",
     "nodemon": "^2.0.7",
     "semver": "^7.3.4",
+    "ts-node": "^9.1.1",
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.15",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^14.14.35",
+    "@types/supertest": "^2.0.10",
+    "@typescript-eslint/eslint-plugin": "^4.19.0",
+    "@typescript-eslint/parser": "^4.19.0",
     "chai": "^4.3.0",
+    "eslint": "^7.22.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
     "jsdoc": "^3.6.6",
     "mocha": "^8.3.0",
     "nock": "^13.0.7",
     "nyc": "^15.1.0",
     "sinon": "^9.2.4",
     "sinon-chai": "^3.5.0",
-    "standard": "^16.0.3",
-    "supertest": "^6.1.3"
+    "supertest": "^6.1.3",
+    "ts-mocha": "^8.0.0",
+    "typescript": "^4.2.3"
   },
   "engines": {
     "node": ">=12.0.0"
   },
-  "standard": {
-    "env": [
-      "mocha"
-    ],
-    "ignore": [
-      "docs"
-    ]
-  },
   "nyc": {
     "include": [
-      "lib/**/*.js",
-      "utils/**/*.js",
-      "app.js"
+      "lib/**/*.ts",
+      "persistence/**/*.ts",
+      "routes/**/*.ts",
+      "utils/**/*.ts",
+      "app.ts"
     ],
     "exclude": [
-      "**/*-test.js"
+      "**/*-test.ts"
     ],
     "reporter": [
       "lcov",

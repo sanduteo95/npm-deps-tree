@@ -1,11 +1,11 @@
-const express = require('express')
+import express from 'express'
+
+import * as dependency from '../lib/dependency'
+import { formatError } from '../utils/error'
+import logger from '../utils/logger'
+import { validate } from './middleware'
 
 const router = express.Router()
-
-const dependency = require('../lib/dependency')
-const { formatError } = require('../utils/error')
-const logger = require('../utils/logger')
-const { validate } = require('./middleware')
 
 /**
  * Helper function that handles passing over the computation of the dependency tree
@@ -29,4 +29,4 @@ const _handler = async (req, res, next) => {
 router.get('/package/:package', validate, _handler)
 router.post('/package/:package', validate, _handler)
 
-module.exports = router
+export default router

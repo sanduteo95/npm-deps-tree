@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
-const expect = require('chai').expect
+import { expect } from 'chai'
 
-const { validateName, validateVersion } = require('../../utils/validation')
+import { validateName, validateVersion } from '../../utils/validation'
 
 describe('validation.js', () => {
   describe('validateName', () => {

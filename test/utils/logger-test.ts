@@ -1,6 +1,6 @@
-const expect = require('chai').expect
+import { expect } from 'chai'
 
-const logger = require('../../utils/logger')
+import logger from '../../utils/logger'
 
 describe('logger.js', () => {
   it('exports a logger', () => {

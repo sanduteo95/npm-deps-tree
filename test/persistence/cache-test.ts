@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
-const expect = require('chai').expect
+import { expect } from 'chai'
 
-const cache = require('../../persistence/cache')
+import * as cache from '../../persistence/cache'
 
 describe('cache.js', () => {
   const value = {
@@ -10,7 +10,7 @@ describe('cache.js', () => {
 
   describe('isCached', () => {
     afterEach(() => {
-      cache.internal._clear()
+      cache._clear()
     })
 
     it('returns false if package is not in cache', () => {
@@ -18,12 +18,12 @@ describe('cache.js', () => {
     })
 
     it('returns false if package with given version is not in cache', () => {
-      cache.setCachedValue('test', 'v1')
+      cache.setCachedValue('test', 'v1', 'value')
       expect(cache.isCached('test', 'v2')).to.be.false
     })
 
     it('returns true if package with given version is in cache', () => {
-      cache.setCachedValue('test', 'v1')
+      cache.setCachedValue('test', 'v1',  'value')
       expect(cache.isCached('test', 'v1')).to.be.true
     })
   })
@@ -34,7 +34,7 @@ describe('cache.js', () => {
     })
 
     afterEach(() => {
-      cache.internal._clear()
+      cache._clear()
     })
 
     it('returns the cached value if exists', () => {
@@ -48,7 +48,7 @@ describe('cache.js', () => {
 
   describe('setCachedValue', () => {
     afterEach(() => {
-      cache.internal._clear()
+      cache._clear()
     })
 
     it('returns the cached value', () => {
@@ -57,7 +57,7 @@ describe('cache.js', () => {
     })
 
     it('resets the value after the expiry time', () => {
-      cache.internal._setExpiry(3) // 3 seconds
+      cache._setExpiry(3) // 3 seconds
       cache.setCachedValue('test', 'v1', value)
       expect(cache.getCachedValue('test', 'v1')).to.deep.equal(value)
       setTimeout(() => {

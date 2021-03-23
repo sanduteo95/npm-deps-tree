@@ -1,4 +1,4 @@
-const app = require('./app')
+import app from './app'
 
 const PORT = process.env.PORT || 3000
 const server = app.listen(PORT, () => {
@@ -7,7 +7,6 @@ const server = app.listen(PORT, () => {
 
 const handleExit = (signal) => {
   console.log(`Received ${signal}. Close my server properly.`)
-  // @ts-ignore
   server.close(() => {
     process.exit(0)
   })

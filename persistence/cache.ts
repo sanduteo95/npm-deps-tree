@@ -1,15 +1,15 @@
-const NodeCache = require('node-cache')
+import NodeCache from 'node-cache'
 const cache = new NodeCache()
 
 let EXPIRY = 60 * 60 * 24 // 24h cache expiry
 
 // only used for testing
-const _setExpiry = (expiry) => {
+export const _setExpiry = (expiry) => {
   EXPIRY = expiry
 }
 
 // only used for testing
-const _clear = () => {
+export const _clear = () => {
   cache.flushAll()
 }
 
@@ -32,7 +32,7 @@ const _getKey = (name, version) => {
  * @returns {boolean} Whether it is cached or not.
  * @function
  */
-const isCached = (name, version) => {
+export const isCached = (name, version) => {
   return cache.has(_getKey(name, version))
 }
 
@@ -43,7 +43,7 @@ const isCached = (name, version) => {
  * @returns {Object} The cached value for the given name and version pair.
  * @function
  */
-const getCachedValue = (name, version) => {
+export const getCachedValue = (name, version) => {
   return cache.get(_getKey(name, version))
 }
 
@@ -54,16 +54,6 @@ const getCachedValue = (name, version) => {
  * @returns {void}
  * @function
  */
-const setCachedValue = (name, version, value) => {
+export const setCachedValue = (name, version, value) => {
   cache.set(_getKey(name, version), value, EXPIRY)
-}
-
-module.exports = {
-  isCached,
-  getCachedValue,
-  setCachedValue,
-  internal: {
-    _setExpiry,
-    _clear
-  }
 }

@@ -5,13 +5,8 @@
  * @returns {Object} An error.
  * @function
  */
-const formatError = (status, message) => {
+export const formatError = (status, message) => {
   const err = new Error(message)
-  // @ts-ignore
   err.status = status
   return err
-}
-
-module.exports = {
-  formatError
 }

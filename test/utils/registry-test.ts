@@ -1,19 +1,20 @@
 /* eslint-disable no-unused-expressions */
-const chai = require('chai')
-const expect = chai.expect
-const sinon = require('sinon')
-const sinonChai = require('sinon-chai')
-chai.use(sinonChai)
-const nock = require('nock')
+import chai from 'chai'
+import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
+import nock from 'nock'
 
-const registry = require('../../utils/registry')
+import * as registry from '../../utils/registry'
+
+const expect = chai.expect
+chai.use(sinonChai)
 
 describe('registry.js', () => {
   describe('downloadPackageWithVersion', () => {
     let _makeRegistryCallStub
 
     beforeEach(() => {
-      _makeRegistryCallStub = sinon.stub(registry.internal, '_makeRegistryCall')
+      _makeRegistryCallStub = sinon.stub(registry, '_makeRegistryCall')
     })
 
     afterEach(() => {
@@ -49,7 +50,7 @@ describe('registry.js', () => {
     let _makeRegistryCallStub
 
     beforeEach(() => {
-      _makeRegistryCallStub = sinon.stub(registry.internal, '_makeRegistryCall')
+      _makeRegistryCallStub = sinon.stub(registry, '_makeRegistryCall')
     })
 
     afterEach(() => {
@@ -125,7 +126,7 @@ describe('registry.js', () => {
 
   describe('_makeRegistryCall', () => {
     before(() => {
-      registry.internal._setRetries(0)
+      registry._setRetries(0)
     })
 
     it('returns response if call succeeds', async () => {
@@ -135,7 +136,7 @@ describe('registry.js', () => {
       nock('https://registry.npmjs.org')
         .get('/test')
         .reply(200, response)
-      const { body } = await (registry.internal._makeRegistryCall('/test'))
+      const { body } = await (registry._makeRegistryCall('/test'))
       expect(body).to.deep.equal(response)
     })
 
@@ -144,7 +145,7 @@ describe('registry.js', () => {
         nock('https://registry.npmjs.org')
           .get('/test')
           .replyWithError('Test')
-        await (registry.internal._makeRegistryCall('/test'))
+        await (registry._makeRegistryCall('/test'))
         expect('Test should fail').to.be.true
       } catch (err) {
         expect(err.message).to.equal('Test')

@@ -1,9 +1,9 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const rateLimit = require('express-rate-limit')
+import express from 'express'
+import bodyParser from 'body-parser'
+import rateLimit from 'express-rate-limit'
 
-const router = require('./routes/router')
-const { notFound, error } = require('./routes/middleware')
+import router from './routes/router'
+import { notFound, error } from './routes/middleware'
 
 const app = express()
 
@@ -24,4 +24,4 @@ app.use(notFound)
 // Middleware for returning errors
 app.use(error)
 
-module.exports = app
+export default app
