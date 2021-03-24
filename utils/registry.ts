@@ -1,3 +1,5 @@
+/// <reference types="../types/common" />
+
 import got from 'got'
 import semver from 'semver'
 
@@ -7,20 +9,19 @@ const REGISTRY_URL = 'https://registry.npmjs.org'
 let RETRIES = 5
 
 // Helper function to set retries for tests
-export const _setRetries = retries => {
+export const _setRetries = (retries: number): void => {
   RETRIES = retries
 }
 
 /**
  * Downloads the package with the given version.
- * @param {string} name The name of the package.
- * @param {string} version The version of the package.
- * @returns {Promise<Object>} The package.
- * @function
+ * @param name The name of the package.
+ * @param version The version of the package.
+ * @returns The package.
  */
-export const downloadPackageWithVersion = async (name, version) => {
+export const downloadPackageWithVersion = async (name: string, version: string): Promise<Package> => {
   try {
-    const { body } = await _makeRegistryCall(`/${name}/${version}`)
+    const body = await _makeRegistryCall(`/${name}/${version}`)
     logger.info(`Downloaded package ${name}:${version}`)
     return body
   } catch (error) {
@@ -31,14 +32,13 @@ export const downloadPackageWithVersion = async (name, version) => {
 
 /**
  * Downloads the package versions and looks for the package that matches the given version.
- * @param {string} name The name of the package.
- * @param {string} version The semver version of the package.
- * @returns {Promise<Object>} The package.
- * @function
+ * @param name The name of the package.
+ * @param version The semver version of the package.
+ * @returns The package.
  */
-export const downloadPackage = async (name, version) => {
+export const downloadPackage = async (name: string, version: string): Promise<Package> => {
   try {
-    const { body } = await _makeRegistryCall(`/${name}`)
+    const body = await _makeRegistryCall(`/${name}`)
 
     const matchingVersion = _getMatchingVersion(body.versions, version)
     if (matchingVersion === undefined) {
@@ -53,16 +53,16 @@ export const downloadPackage = async (name, version) => {
 
 /**
  * Helper function to make the registry call
- * @param {string} path The path to call
- * @returns {Promise<any>} The package
- * @inner
- * @function
+ * @param path The path to call
+ * @returns The package
+ * @internal
  */
-export const _makeRegistryCall: any = async path => {
+export const _makeRegistryCall = async (path: string): Promise<Package> => {
   const url = `${REGISTRY_URL}${path}`
   try {
     logger.info(`Calling out to ${url}`)
-    return await got.get(url, { responseType: 'json', retry: RETRIES })
+    const response = await got.get<Package>(url, { responseType: 'json', retry: RETRIES })
+    return response.body
   } catch (error) {
     /* istanbul ignore next */
     if (error.response && error.response.body) {
@@ -77,13 +77,12 @@ export const _makeRegistryCall: any = async path => {
 
 /**
  * Helper function to find the first matching version in reverse
- * @param {Array} versions The available versions
- * @param {string} version The provided version to match them to
- * @returns {string} The matching version
- * @inner
- * @function
+ * @param versions The available versions
+ * @param version The provided version to match them to
+ * @returns The matching version
+ * @internal
  */
-const _getMatchingVersion = (versions, version) => {
+const _getMatchingVersion = (versions: Version[], version: string): (string | undefined) => {
   // look at available versions in reverse order and find the first version that matches
   return Object.keys(versions).reverse().find(availableVersion => {
     return semver.satisfies(availableVersion, version)

@@ -22,9 +22,21 @@
     "./routes/*",
     "./utils/*",
     "app.ts",
-    "index.js",
+    "server.ts"
   ],
   "exclude": [
+    "./node_modules/@types",
     "./test/**/*"
-  ]
+  ],
+  "typedocOptions": {
+    "entryPoints": [
+      "lib/",
+      "persistence/",
+      "routes/",
+      "utils/",
+      "app.ts",
+      "server.ts"
+    ],
+    "out": "docs"
+  }
 }

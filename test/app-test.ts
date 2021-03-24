@@ -1,6 +1,6 @@
 import chai from 'chai'
 import sinon from 'sinon'
-import request from 'supertest'
+import request, { Response } from 'supertest'
 
 import app from '../app'
 import * as dependency from '../lib/dependency'
@@ -47,7 +47,10 @@ describe('GET', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(500)
-      .then((response: any) => {
+      .then((response: Response) => {
+        if (!response.error) {
+          throw new Error('Failed!')
+        }
         expect(JSON.parse(response.error.text)).to.deep.equal({
           error: 'Test'
         })
@@ -122,7 +125,10 @@ describe('POST', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(500)
-      .then((response: any) => {
+      .then((response: Response) => {
+        if (!response.error) {
+          throw new Error('Failed!')
+        }
         expect(JSON.parse(response.error.text)).to.deep.equal({
           error: 'Test'
         })
@@ -139,7 +145,10 @@ describe('invalid name', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(400)
-      .then((response: any) => {
+      .then((response: Response) => {
+        if (!response.error) {
+          throw new Error('Failed!')
+        }
         expect(JSON.parse(response.error.text)).to.deep.equal({
           error: 'Name is not a valid NPM package name.'
         })
@@ -155,7 +164,10 @@ describe('invalid name', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(400)
-      .then((response: any) => {
+      .then((response: Response) => {
+        if (!response.error) {
+          throw new Error('Failed!')
+        }
         expect(JSON.parse(response.error.text)).to.deep.equal({
           error: 'Name is not a valid NPM package name.'
         })
@@ -175,7 +187,10 @@ describe('invalid version', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(400)
-      .then((response: any) => {
+      .then((response: Response) => {
+        if (!response.error) {
+          throw new Error('Failed!')
+        }
         expect(JSON.parse(response.error.text)).to.deep.equal({
           error: 'The version is invalid.'
         })
@@ -193,7 +208,10 @@ describe('invalid version', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(400)
-      .then((response: any) => {
+      .then((response: Response) => {
+        if (!response.error) {
+          throw new Error('Failed!')
+        }
         expect(JSON.parse(response.error.text)).to.deep.equal({
           error: 'The version is invalid.'
         })
@@ -210,7 +228,10 @@ describe('undefined route', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(404)
-      .then((response: any) => {
+      .then((response: Response) => {
+        if (!response.error) {
+          throw new Error('Failed!')
+        }
         expect(JSON.parse(response.error.text)).to.deep.equal({
           error: 'Not implemented!'
         })

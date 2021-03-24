@@ -22,7 +22,7 @@ const _handler = async (req, res, next) => {
     const dependencyTree = await dependency.computeDependencyTreeForPackage(req.name, req.version)
     res.send(dependencyTree)
   } catch (error) {
-    next(formatError(500, error.message))
+    next(formatError(error.message, 500))
   }
 }
 

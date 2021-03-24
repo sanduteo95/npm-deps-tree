@@ -27,9 +27,7 @@ describe('registry.js', () => {
           dep2: '2.3.4'
         }
       }
-      _makeRegistryCallStub.resolves({
-        body: response
-      })
+      _makeRegistryCallStub.resolves(response)
       const actual = await (registry.downloadPackageWithVersion('name', 'version'))
       expect(actual).to.deep.equal(response)
     })
@@ -64,19 +62,17 @@ describe('registry.js', () => {
         }
       }
       _makeRegistryCallStub.resolves({
-        body: {
-          versions: {
-            '1.0.0': {
-              dependencies: {
-                dep1: '1.2.3',
-                dep2: '2.3.4'
-              }
-            },
-            '2.0.0': {
-              dependencies: {
-                dep1: '1.2.3',
-                dep2: '2.3.4'
-              }
+        versions: {
+          '1.0.0': {
+            dependencies: {
+              dep1: '1.2.3',
+              dep2: '2.3.4'
+            }
+          },
+          '2.0.0': {
+            dependencies: {
+              dep1: '1.2.3',
+              dep2: '2.3.4'
             }
           }
         }
@@ -88,19 +84,17 @@ describe('registry.js', () => {
     it('throws an error if it could not find a matching version', async () => {
       try {
         _makeRegistryCallStub.resolves({
-          body: {
-            versions: {
-              '1.0.0': {
-                dependencies: {
-                  dep1: '1.2.3',
-                  dep2: '2.3.4'
-                }
-              },
-              '2.0.0': {
-                dependencies: {
-                  dep1: '1.2.3',
-                  dep2: '2.3.4'
-                }
+          versions: {
+            '1.0.0': {
+              dependencies: {
+                dep1: '1.2.3',
+                dep2: '2.3.4'
+              }
+            },
+            '2.0.0': {
+              dependencies: {
+                dep1: '1.2.3',
+                dep2: '2.3.4'
               }
             }
           }
@@ -135,7 +129,7 @@ describe('registry.js', () => {
       nock('https://registry.npmjs.org')
         .get('/test')
         .reply(200, response)
-      const { body } = await (registry._makeRegistryCall('/test'))
+      const body = await (registry._makeRegistryCall('/test'))
       expect(body).to.deep.equal(response)
     })
 
