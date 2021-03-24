@@ -1,9 +1,8 @@
-/// <reference types="../types/common" />
-
 import got from 'got'
 import semver from 'semver'
 
 import logger from './logger'
+import * as types from '../types'
 
 const REGISTRY_URL = 'https://registry.npmjs.org'
 let RETRIES = 5
@@ -19,7 +18,7 @@ export const _setRetries = (retries: number): void => {
  * @param version The version of the package.
  * @returns The package.
  */
-export const downloadPackageWithVersion = async (name: string, version: string): Promise<Package> => {
+export const downloadPackageWithVersion = async (name: string, version: string): Promise<types.Package> => {
   try {
     const body = await _makeRegistryCall(`/${name}/${version}`)
     logger.info(`Downloaded package ${name}:${version}`)
@@ -36,7 +35,7 @@ export const downloadPackageWithVersion = async (name: string, version: string):
  * @param version The semver version of the package.
  * @returns The package.
  */
-export const downloadPackage = async (name: string, version: string): Promise<Package> => {
+export const downloadPackage = async (name: string, version: string): Promise<types.Package> => {
   try {
     const body = await _makeRegistryCall(`/${name}`)
 
@@ -57,11 +56,11 @@ export const downloadPackage = async (name: string, version: string): Promise<Pa
  * @returns The package
  * @internal
  */
-export const _makeRegistryCall = async (path: string): Promise<Package> => {
+export const _makeRegistryCall = async (path: string): Promise<types.Package> => {
   const url = `${REGISTRY_URL}${path}`
   try {
     logger.info(`Calling out to ${url}`)
-    const response = await got.get<Package>(url, { responseType: 'json', retry: RETRIES })
+    const response = await got.get<types.Package>(url, { responseType: 'json', retry: RETRIES })
     return response.body
   } catch (error) {
     /* istanbul ignore next */
@@ -82,7 +81,7 @@ export const _makeRegistryCall = async (path: string): Promise<Package> => {
  * @returns The matching version
  * @internal
  */
-const _getMatchingVersion = (versions: Version[], version: string): (string | undefined) => {
+const _getMatchingVersion = (versions: types.Version[], version: string): (string | undefined) => {
   // look at available versions in reverse order and find the first version that matches
   return Object.keys(versions).reverse().find(availableVersion => {
     return semver.satisfies(availableVersion, version)

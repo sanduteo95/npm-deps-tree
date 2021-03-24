@@ -14,9 +14,11 @@
     "strict": true,
     "noImplicitAny": false, // Needed to compile tap and ansi-escapes
     "composite": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
   "include": [
+    "./types/*",
     "./lib/*",
     "./persistence/*",
     "./routes/*",

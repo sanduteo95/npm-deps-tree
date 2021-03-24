@@ -1,9 +1,8 @@
-/// <reference types="../types/common" />
-
 import * as cache from '../persistence/cache'
 import logger from '../utils/logger'
 import * as utils from '../utils/registry'
 import { VERSION_REGEX } from '../utils/validation'
+import * as types from '../types'
 
 /**
  * Computes the dependency tree for a given package with a given version.
@@ -14,7 +13,7 @@ import { VERSION_REGEX } from '../utils/validation'
  * @param version The version of the package.
  * @returns The formatted dependencies.
  */
-export const computeDependencyTreeForPackage = async (name: string, version: string): Promise<PackageDependencyTree> => {
+export const computeDependencyTreeForPackage = async (name: string, version: string): Promise<types.PackageDependencyTree> => {
   logger.info(`Computing dependency tree for ${name}:${version}`)
 
   try {
@@ -33,7 +32,7 @@ export const computeDependencyTreeForPackage = async (name: string, version: str
         throw new Error('Cannot have cyclic dependencies.')
       }
 
-      const promises: Promise<PackageDependencyTree>[] = []
+      const promises: Promise<types.PackageDependencyTree>[] = []
       for (const dependency in dependencies) {
         promises.push(computeDependencyTreeForPackage(dependency, dependencies[dependency]))
       }
@@ -62,7 +61,7 @@ export const computeDependencyTreeForPackage = async (name: string, version: str
  * @returns Flag signaling if there is a cyclic dependency.
  * @internal
  */
-const _hasCyclicDependency = (dependencies: Dependencies, name: string): boolean => {
+const _hasCyclicDependency = (dependencies: types.Dependencies, name: string): boolean => {
   return dependencies !== undefined && dependencies[name] !== undefined
 }
 
@@ -74,7 +73,7 @@ const _hasCyclicDependency = (dependencies: Dependencies, name: string): boolean
  * @returns An object containing the dependencies and matchVersion: { "dependencies": <>, "matchVersion": <>"}
  * @internal
  */
-export const _getPackageDependencies = async (name: string, version: string): Promise<PackageDependencies> => {
+export const _getPackageDependencies = async (name: string, version: string): Promise<types.PackageDependencies> => {
   try {
     logger.info('Retrieving the list of dependencies')
     let downloadedPackage

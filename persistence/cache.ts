@@ -1,4 +1,7 @@
 import NodeCache from 'node-cache'
+
+import * as types from '../types'
+
 const cache = new NodeCache()
 
 let EXPIRY = 60 * 60 * 24 // 24h cache expiry
@@ -40,7 +43,7 @@ export const isCached = (name: string, version: string): boolean => {
  * @param version The version of the package.
  * @returns The cached value for the given name and version pair.
  */
-export const getCachedValue = (name: string, version: string): (PackageDependencyTree | undefined) => {
+export const getCachedValue = (name: string, version: string): (types.PackageDependencyTree | undefined) => {
   return cache.get(_getKey(name, version))
 }
 
@@ -50,6 +53,6 @@ export const getCachedValue = (name: string, version: string): (PackageDependenc
  * @param version The version of the package.
  * @Param value The value to cache.
  */
-export const setCachedValue = (name: string, version: string, value: PackageDependencyTree): void => {
+export const setCachedValue = (name: string, version: string, value: types.PackageDependencyTree): void => {
   cache.set(_getKey(name, version), value, EXPIRY)
 }
