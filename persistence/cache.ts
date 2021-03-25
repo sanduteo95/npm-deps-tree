@@ -23,7 +23,7 @@ export const _clear = (): void => {
  * @returns The resulting key: "<name>:<version>".
  * @internal
  */
-const _getKey = (name: string, version: string): string => {
+const _getKey = (name: types.Name, version: types.Version): string => {
   return `${name}:${version}`
 }
 
@@ -33,7 +33,7 @@ const _getKey = (name: string, version: string): string => {
  * @param version The version of the package.
  * @returns Whether it is cached or not.
  */
-export const isCached = (name: string, version: string): boolean => {
+export const isCached = (name: types.Name, version: types.Version): boolean => {
   return cache.has(_getKey(name, version))
 }
 
@@ -43,7 +43,7 @@ export const isCached = (name: string, version: string): boolean => {
  * @param version The version of the package.
  * @returns The cached value for the given name and version pair.
  */
-export const getCachedValue = (name: string, version: string): (types.PackageDependencyTree | undefined) => {
+export const getCachedValue = (name: types.Name, version: types.Version): (types.DependencyTree[] | undefined) => {
   return cache.get(_getKey(name, version))
 }
 
@@ -53,6 +53,6 @@ export const getCachedValue = (name: string, version: string): (types.PackageDep
  * @param version The version of the package.
  * @Param value The value to cache.
  */
-export const setCachedValue = (name: string, version: string, value: types.PackageDependencyTree): void => {
+export const setCachedValue = (name: types.Name, version: types.Version, value: types.DependencyTree[]): void => {
   cache.set(_getKey(name, version), value, EXPIRY)
 }

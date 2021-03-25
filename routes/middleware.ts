@@ -4,15 +4,8 @@ import logger from '../utils/logger'
 import { validateName, validateVersion } from '../utils/validation'
 import { Request, Response, NextFunction } from 'express'
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace Express {
-    interface Request {
-      name: string
-      version: string
-    }
-  }
-}
+import '../types'
+
 /**
  * Middleware for validating the package name and version
  * @param req The Express request.

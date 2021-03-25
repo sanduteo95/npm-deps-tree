@@ -5,7 +5,7 @@ const server = app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}...`)
 })
 
-const handleExit = (signal) => {
+const handleExit = (signal: number) => {
   console.log(`Received ${signal}. Close my server properly.`)
   server.close(() => {
     process.exit(0)

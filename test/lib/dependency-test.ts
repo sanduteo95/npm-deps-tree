@@ -11,7 +11,7 @@ const expect = chai.expect
 chai.use(sinonChai)
 
 describe('dependency.js', () => {
-  describe('_getPackageDependencies', () => {
+  describe('_getVersionedDependencies', () => {
     let downloadPackageWithVersionStub
     let downloadPackageStub
 
@@ -35,7 +35,7 @@ describe('dependency.js', () => {
           }
         }
         downloadPackageWithVersionStub.resolves(testDependencies)
-        const actual = await dependency._getPackageDependencies('package', '1.2.3')
+        const actual = await dependency._getVersionedDependencies('package', '1.2.3')
         expect(actual).to.deep.equal({
           dependencies: testDependencies.dependencies,
           matchVersion: testDependencies.version
@@ -53,7 +53,7 @@ describe('dependency.js', () => {
           }
         }
         downloadPackageStub.resolves(testDependencies)
-        const actual = await dependency._getPackageDependencies('package', '>= 1.0.0 <2')
+        const actual = await dependency._getVersionedDependencies('package', '>= 1.0.0 <2')
         expect(actual).to.deep.equal({
           dependencies: testDependencies.dependencies,
           matchVersion: testDependencies.version
@@ -67,7 +67,7 @@ describe('dependency.js', () => {
           version: 'version'
         }
         downloadPackageWithVersionStub.resolves(testDependencies)
-        const actual = await dependency._getPackageDependencies('package', '1.2.3')
+        const actual = await dependency._getVersionedDependencies('package', '1.2.3')
         expect(actual).to.deep.equal({
           dependencies: undefined,
           matchVersion: testDependencies.version
@@ -91,7 +91,7 @@ describe('dependency.js', () => {
 
       it('re-throws the error', async () => {
         try {
-          await dependency._getPackageDependencies('package', '1.2.3')
+          await dependency._getVersionedDependencies('package', '1.2.3')
           expect('Test should fail').to.be.true
         } catch (err) {
           expect(err.message).to.equal('Test')
@@ -101,7 +101,7 @@ describe('dependency.js', () => {
   })
 
   describe('computeDependencyTreeForPackage', () => {
-    let _getPackageDependenciesStub
+    let _getVersionedDependenciesStub
     let isCachedStub
     let getCachedValueStub
     let setCachedValueSpy
@@ -110,14 +110,14 @@ describe('dependency.js', () => {
       isCachedStub = sinon.stub(cache, 'isCached')
       getCachedValueStub = sinon.stub(cache, 'getCachedValue')
       setCachedValueSpy = sinon.spy(cache, 'setCachedValue')
-      _getPackageDependenciesStub = sinon.stub(dependency, '_getPackageDependencies')
+      _getVersionedDependenciesStub = sinon.stub(dependency, '_getVersionedDependencies')
     })
 
     afterEach(() => {
       isCachedStub.restore()
       getCachedValueStub.restore()
       setCachedValueSpy.restore()
-      _getPackageDependenciesStub.restore()
+      _getVersionedDependenciesStub.restore()
     })
 
     it('returns cached values', async () => {
@@ -130,14 +130,14 @@ describe('dependency.js', () => {
           dependencies: []
         }
       })
-      expect(_getPackageDependenciesStub.callCount).to.equal(0)
+      expect(_getVersionedDependenciesStub.callCount).to.equal(0)
       expect(getCachedValueStub.callCount).to.equal(1)
       expect(setCachedValueSpy.callCount).to.equal(0)
     })
 
     it('recursively gets dependencies if provided latest version', async () => {
       isCachedStub.returns(false)
-      _getPackageDependenciesStub.callsFake(async (name, version) => {
+      _getVersionedDependenciesStub.callsFake(async (name, version) => {
         let dependencies
         switch (name) {
           case 'package':
@@ -209,14 +209,14 @@ describe('dependency.js', () => {
           ]
         }
       })
-      expect(_getPackageDependenciesStub.callCount).to.equal(6)
+      expect(_getVersionedDependenciesStub.callCount).to.equal(6)
       expect(getCachedValueStub.callCount).to.equal(0)
       expect(setCachedValueSpy.callCount).to.equal(6)
     })
 
     it('recursively gets dependencies if not cached', async () => {
       isCachedStub.returns(false)
-      _getPackageDependenciesStub.callsFake(async (name, version) => {
+      _getVersionedDependenciesStub.callsFake(async (name, version) => {
         let dependencies
         switch (name) {
           case 'package':
@@ -288,13 +288,13 @@ describe('dependency.js', () => {
           ]
         }
       })
-      expect(_getPackageDependenciesStub.callCount).to.equal(6)
+      expect(_getVersionedDependenciesStub.callCount).to.equal(6)
       expect(getCachedValueStub.callCount).to.equal(0)
       expect(setCachedValueSpy.callCount).to.equal(6)
     })
 
     it('throws an error when cyclic dependency found', async () => {
-      _getPackageDependenciesStub.callsFake(async (name, version) => {
+      _getVersionedDependenciesStub.callsFake(async (name, version) => {
         let dependencies
         if (name === 'package') {
           dependencies = {
@@ -314,18 +314,18 @@ describe('dependency.js', () => {
         expect('Test should fail').to.be.true
       } catch (err) {
         expect(err.message).to.equal('Cannot have cyclic dependencies.')
-        expect(_getPackageDependenciesStub.callCount).to.equal(1)
+        expect(_getVersionedDependenciesStub.callCount).to.equal(1)
       }
     })
 
     it('catches and re-throws an error', async () => {
-      _getPackageDependenciesStub.rejects(new Error('Test'))
+      _getVersionedDependenciesStub.rejects(new Error('Test'))
       try {
         await dependency.computeDependencyTreeForPackage('package', 'latest')
         expect('Test should fail').to.be.true
       } catch (err) {
         expect(err.message).to.equal('Test')
-        expect(_getPackageDependenciesStub.callCount).to.equal(1)
+        expect(_getVersionedDependenciesStub.callCount).to.equal(1)
       }
     })
   })

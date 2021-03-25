@@ -72,7 +72,7 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="lib_dependency.html#_getpackagedependencies" class="tsd-kind-icon">_get<wbr>Package<wbr>Dependencies</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="lib_dependency.html#_getversioneddependencies" class="tsd-kind-icon">_get<wbr>Versioned<wbr>Dependencies</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="lib_dependency.html#computedependencytreeforpackage" class="tsd-kind-icon">compute<wbr>Dependency<wbr>Tree<wbr>For<wbr>Package</a></li>
 							</ul>
 						</section>
@@ -82,16 +82,16 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="_getpackagedependencies" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> _get<wbr>Package<wbr>Dependencies</h3>
+					<a name="_getversioneddependencies" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> _get<wbr>Versioned<wbr>Dependencies</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">_get<wbr>Package<wbr>Dependencies<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">PackageDependencies</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">_get<wbr>Versioned<wbr>Dependencies<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">VersionedDependencies</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sanduteo95/snyk-take-home/blob/db523b3/lib/dependency.ts#L76">lib/dependency.ts:76</a></li>
+									<li>Defined in <a href="https://github.com/sanduteo95/snyk-take-home/blob/7e18c2e/lib/dependency.ts#L76">lib/dependency.ts:76</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -118,7 +118,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">PackageDependencies</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">VersionedDependencies</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>An object containing the dependencies and matchVersion: { &quot;dependencies&quot;: &lt;&gt;, &quot;matchVersion&quot;: &lt;&gt;&quot;}</p>
 						</li>
 					</ul>
@@ -127,13 +127,13 @@
 					<a name="computedependencytreeforpackage" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> compute<wbr>Dependency<wbr>Tree<wbr>For<wbr>Package</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">compute<wbr>Dependency<wbr>Tree<wbr>For<wbr>Package<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">PackageDependencyTree</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">compute<wbr>Dependency<wbr>Tree<wbr>For<wbr>Package<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">DependencyTree</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sanduteo95/snyk-take-home/blob/db523b3/lib/dependency.ts#L16">lib/dependency.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/sanduteo95/snyk-take-home/blob/7e18c2e/lib/dependency.ts#L16">lib/dependency.ts:16</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -159,7 +159,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">PackageDependencyTree</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">DependencyTree</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>The formatted dependencies.</p>
 						</li>
 					</ul>
@@ -204,7 +204,7 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="lib_dependency.html#_getpackagedependencies" class="tsd-kind-icon">_get<wbr>Package<wbr>Dependencies</a>
+						<a href="lib_dependency.html#_getversioneddependencies" class="tsd-kind-icon">_get<wbr>Versioned<wbr>Dependencies</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="lib_dependency.html#computedependencytreeforpackage" class="tsd-kind-icon">compute<wbr>Dependency<wbr>Tree<wbr>For<wbr>Package</a>

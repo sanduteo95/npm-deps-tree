@@ -13,7 +13,7 @@ import * as types from '../types'
  * @param version The version of the package.
  * @returns The formatted dependencies.
  */
-export const computeDependencyTreeForPackage = async (name: string, version: string): Promise<types.PackageDependencyTree> => {
+export const computeDependencyTreeForPackage = async (name: types.Name, version: types.Version): Promise<types.DependencyTree> => {
   logger.info(`Computing dependency tree for ${name}:${version}`)
 
   try {
@@ -24,7 +24,7 @@ export const computeDependencyTreeForPackage = async (name: string, version: str
       dependencyTree = cache.getCachedValue(name, version)
       actualVersion = version
     } else {
-      const { dependencies, matchVersion } = await _getPackageDependencies(name, version)
+      const { dependencies, matchVersion } = await _getVersionedDependencies(name, version)
 
       // look for cyclic dependency first, to avoid extra computation
       if (_hasCyclicDependency(dependencies, name)) {
@@ -32,7 +32,7 @@ export const computeDependencyTreeForPackage = async (name: string, version: str
         throw new Error('Cannot have cyclic dependencies.')
       }
 
-      const promises: Promise<types.PackageDependencyTree>[] = []
+      const promises: Promise<types.DependencyTree>[] = []
       for (const dependency in dependencies) {
         promises.push(computeDependencyTreeForPackage(dependency, dependencies[dependency]))
       }
@@ -61,7 +61,7 @@ export const computeDependencyTreeForPackage = async (name: string, version: str
  * @returns Flag signaling if there is a cyclic dependency.
  * @internal
  */
-const _hasCyclicDependency = (dependencies: types.Dependencies, name: string): boolean => {
+const _hasCyclicDependency = (dependencies: types.Dependencies, name: types.Name): boolean => {
   return dependencies !== undefined && dependencies[name] !== undefined
 }
 
@@ -73,7 +73,7 @@ const _hasCyclicDependency = (dependencies: types.Dependencies, name: string): b
  * @returns An object containing the dependencies and matchVersion: { "dependencies": <>, "matchVersion": <>"}
  * @internal
  */
-export const _getPackageDependencies = async (name: string, version: string): Promise<types.PackageDependencies> => {
+export const _getVersionedDependencies = async (name: types.Name, version: types.Version): Promise<types.VersionedDependencies> => {
   try {
     logger.info('Retrieving the list of dependencies')
     let downloadedPackage

@@ -1,6 +1,7 @@
 import validate from 'validate-npm-package-name'
 
 import logger from './logger'
+import * as types from '../types'
 
 export const VERSION_REGEX = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|\*||x\[1-9]\d*)(-[a-zA-Z\d][-a-zA-Z.\d]*)?(\+[a-zA-Z\d][-a-zA-Z.\d]*)?/
 
@@ -10,7 +11,7 @@ export const VERSION_REGEX = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|\*||x\[1-9]\d*)(-[
  * @param name The name of the package.
  * @returns The validated name or throws an error.
  */
-export const validateName = (name: string): string => {
+export const validateName = (name: types.Name): types.Name => {
   const { validForNewPackages, validForOldPackages } = validate(name)
   if (validForNewPackages || /* istanbul ignore next */ validForOldPackages) {
     return name
@@ -25,7 +26,7 @@ export const validateName = (name: string): string => {
  * @param version The version of the package.
  * @returns The validated version or throws an error.
  */
-export const validateVersion = (version: string): string => {
+export const validateVersion = (version: types.Version): types.Version => {
   // latest is allowed
   if (version === 'latest' || VERSION_REGEX.test(version)) {
     return version

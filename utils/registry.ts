@@ -18,7 +18,7 @@ export const _setRetries = (retries: number): void => {
  * @param version The version of the package.
  * @returns The package.
  */
-export const downloadPackageWithVersion = async (name: string, version: string): Promise<types.Package> => {
+export const downloadPackageWithVersion = async (name: types.Name, version: types.Version): Promise<types.Package> => {
   try {
     const body = await _makeRegistryCall(`/${name}/${version}`)
     logger.info(`Downloaded package ${name}:${version}`)
@@ -35,7 +35,7 @@ export const downloadPackageWithVersion = async (name: string, version: string):
  * @param version The semver version of the package.
  * @returns The package.
  */
-export const downloadPackage = async (name: string, version: string): Promise<types.Package> => {
+export const downloadPackage = async (name: types.Name, version: types.Version): Promise<types.Package> => {
   try {
     const body = await _makeRegistryCall(`/${name}`)
 
@@ -81,7 +81,7 @@ export const _makeRegistryCall = async (path: string): Promise<types.Package> =>
  * @returns The matching version
  * @internal
  */
-const _getMatchingVersion = (versions: types.Version[], version: string): (string | undefined) => {
+const _getMatchingVersion = (versions: types.Versions, version: types.Version): (string | undefined) => {
   // look at available versions in reverse order and find the first version that matches
   return Object.keys(versions).reverse().find(availableVersion => {
     return semver.satisfies(availableVersion, version)
